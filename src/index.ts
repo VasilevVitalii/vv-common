@@ -1,0 +1,392 @@
+const REGEX_INT=/^[+-]?\d+$/
+const REGEX_FLOAT=[/^[+-]?\d+(\.\d+)?$/, /^[+-]?\d+(\\,\d+)?$/]
+const REGEX_IP=/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+const REGEX_GUID=/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
+
+/** Check object for undefined, null, NaN, empty string */
+export function IsEmpty(object: any): boolean {
+    if (object === undefined || object === null) return true
+    const type = typeof object
+    if (type === 'number' && isNaN(object)) return true
+    if (type === 'string' && object.trim() === '') return true
+    return false
+}
+
+/** Check object for function */
+export function IsFunction(object: any): boolean {
+    if (object === undefined || object === null) return false
+    return typeof object === 'function'
+}
+
+/** Check object for GUID */
+export function IsGuid(object: any): boolean {
+    return !IsEmpty(object) && REGEX_GUID.test(object)
+}
+
+/** Check object for IP */
+export function IsIp(object: any): boolean {
+    return !IsEmpty(object) && REGEX_IP.test(object)
+}
+
+/** Return first non-empty parameter */
+export function Nz(object1: any, object2: any, ...objects: any[]): any {
+    if (!IsEmpty(object1)) return object1
+    if (!IsEmpty(object2)) return object2
+    if (IsEmpty(objects) || !Array.isArray(objects)) return undefined
+    for (let i = 0; i < objects.length; i++) {
+        if (!IsEmpty(objects[i])) return objects[i]
+    }
+    return undefined
+}
+
+/**
+ * convert Date to String
+ * @param date date for convert
+ * @param format format string, substrings - 'yyyy', 'yy' - year, 'mm' - month, 'dd' - day, 'hh' - hour, 'mi' - minute, 'ss' - second, 'msec' - millisecond OR '126' - 'yyyy-mm-ddThh:mi:ss.msec'
+ * @example format example - 'yyyymmdd', 'yyyy-mm-dd', 'yyyy.mm.dd hh:mi:ss.msec'
+ */
+export function DateFormat(date: Date, format: string): string {
+    if (format === '126') {
+        return DateFormat(date, 'yyyy-mm-ddThh:mi:ss.msec')
+    }
+
+    if (IsEmpty(date)) return ''
+
+    const yyyy = date.getFullYear()
+    const mm = date.getMonth() + 1
+    const dd = date.getDate()
+    const hh = date.getHours()
+    const mi = date.getMinutes()
+    const ss = date.getSeconds()
+    const msec = date.getMilliseconds()
+
+    return format
+        .replace(/yyyy/g, yyyy.toString())
+        .replace(/yy/g, yyyy.toString().substring(2, 5))
+        .replace(/mm/g, `${mm < 10 ? '0' : ''}${mm}`)
+        .replace(/dd/g, `${dd < 10 ? '0' : ''}${dd}`)
+        .replace(/hh/g, `${hh < 10 ? '0' : ''}${hh}`)
+        .replace(/mi/g, `${mi < 10 ? '0' : ''}${mi}`)
+        .replace(/ss/g, `${ss < 10 ? '0' : ''}${ss}`)
+        .replace(/msec/g, `${msec < 10 ? '00' : (msec < 100 ? '0' : '')}${msec}`)
+}
+
+/**
+ * convert Date to String
+ * @param date date for convert
+ * @param format 'dayInYear' - ordinal number of the day of the year, 'secInDay' - ordinal number of the second of the day
+ */
+export function DateFormatOrdinal (date: Date, format: ('dayInYear' | 'secInDay')): string {
+    if (IsEmpty(date)) return ''
+    if (format === 'dayInYear') {
+        const numDayPrepare = date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()
+        const numDay = Math.floor(numDayPrepare / 86400000)
+        const prefixZeros = numDay < 10 ? '00' : (numDay < 100 ? '0' : '')
+        return `${prefixZeros}${numDay}`
+    }
+    if (format === 'secInDay') {
+        const numSecondPrepare = date.getTime() - new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime()
+        const numSecond = Math.floor(numSecondPrepare / 1000)
+        const prefixZeros = numSecond < 10 ? '0000' : (numSecond < 100 ? '000' : (numSecond < 1000 ? '00' : (numSecond < 10000 ? '0' : '')))
+        return `${prefixZeros}${numSecond}`
+    }
+    return ''
+}
+
+/** add second or minute or hour or day to date */
+export function DateAdd(date: Date, interval : ('second'|'minute'|'hour'|'day'), value: number): Date | undefined  {
+    if (IsEmpty(date) || IsEmpty(interval) || IsEmpty(value)) return undefined
+    if (interval === 'second') {
+        return new Date(date.getTime() + (value * 1000))
+    } else if (interval === 'minute') {
+        return new Date(date.getTime() + (value * 1000 * 60))
+    } else if (interval === 'hour') {
+        return new Date(date.getTime() + (value * 1000 * 60 * 60))
+    } else if (interval === 'day') {
+        return new Date(date.getTime() + (value * 1000 * 60 * 60 * 24))
+    }
+    return undefined
+}
+
+// Equal two objects
+export function Equal(object1: any, object2: any): boolean {
+    const isEmpty1 = IsEmpty(object1)
+    const isEmpty2 = IsEmpty(object2)
+
+    if (isEmpty1 && isEmpty2) return true
+    if (isEmpty1 && !isEmpty2) return false
+    if (!isEmpty1 && isEmpty2) return false
+
+    const t1 = typeof object1
+    const t2 = typeof object2
+
+    if (t1 === 'string' && t2 === 'string' && object1.trim().toLowerCase() === object2.trim().toLowerCase()) return true
+    if (t1 === 'number' && t2 === 'number' && object1 === object2) return true
+    if (t1 === 'boolean' && t2 === 'boolean' && object1 === object2) return true
+    if (object1 instanceof Date && object2 instanceof Date) {
+        return Equal(DateFormat(object1, '126'), DateFormat(object2, '126'))
+    }
+    if (t1 === 'object' && t2 === 'object') {
+        try {
+            if (JSON.stringify(object1) === JSON.stringify(object2)) return true
+        } catch (error) {
+            return false
+        }
+    }
+
+    return false
+}
+
+/** Convert value to string */
+export function ToString(value: any): string {
+    if (IsEmpty(value)) return ''
+    if (value instanceof Date) return DateFormat(value, '126')
+    return value.toString()
+}
+
+/** Convert value to integer (number without precision) */
+export function ToInt(value: any): number | undefined {
+    if (IsEmpty(value)) {
+        return undefined
+    }
+    const type = typeof value
+    if (type === 'number') {
+        if (Math.round(value) === value) return value
+    } else if (type === 'string') {
+        if (REGEX_INT.test(value)) return parseInt(value)
+    } else if (type === 'boolean') {
+        if (value === true) return 1
+        if (value === false) return 0
+    }
+    return undefined
+}
+
+/** Convert value to float (number with precision) */
+export function ToFloat(value: any): number | undefined {
+    if (IsEmpty(value)) {
+        return undefined
+    }
+    const type = typeof value
+    if (type === 'number') {
+        return value
+    } else if (type === 'string') {
+        for (let i = 0; i < REGEX_FLOAT.length; i++) {
+            if (REGEX_FLOAT[i].test(value)) return parseFloat(value)
+        }
+    } else if (type === 'boolean') {
+        if (value === true) return 1
+        if (value === false) return 0
+    }
+    return undefined
+}
+
+/** Convert value to boolean */
+export function ToBool(value: any): boolean | undefined {
+    if (IsEmpty(value)) {
+        return undefined
+    }
+    const type = typeof value
+    if (type === 'boolean') {
+        return value
+    } else if (type === 'number') {
+        if (value === 1) return true
+        if (value === 0) return false
+    } else if (type === 'string') {
+        if (['1', 'true', 'yes', 'ok'].includes(value.trim().toLowerCase())) return true
+        if (['0', 'false', 'no', 'cancel'].includes(value.trim().toLowerCase())) return false
+    }
+    return undefined
+}
+
+/**
+ * Convert value to date, known formats:
+ * 2018-04-12T16:35:49.123+03:00
+ * 2018-05-12T16:35:49.123Z
+ * 2018-04-12T16:35:49.<9 digits>
+ * 2018-04-12T16:35:49
+ * 12.04.2018 16:35:49
+ * 12.04.2018 16:35
+ * 12.04.2018
+ * 12-04-2018 16:35:49
+ * 12-04-2018 16:35
+ * 12-04-2018
+ * 2018-04-16
+ * 2018/04/16
+ * 20180416
+ */
+export function ToDate(value: any): Date | undefined {
+    if (IsEmpty(value)) {
+        return undefined
+    }
+    if (value instanceof Date) {
+        return value
+    }
+    if (typeof value !== 'string') {
+        return undefined
+    }
+
+    let year = 0
+    let month = 0
+    let day = 0
+    let hour = 0
+    let minute = 0
+    let second = 0
+    let millisecond = 0
+
+    // 2018.04.12-16:35:49 -> 2018-04-12T16:35:49
+    if (value.length === 19
+        && value.substring(4,5) === '.'
+        && value.substring(7,8) === '.'
+        && value.substring(7,8) === '.'
+        && value.substring(10,11) === '-'
+        && value.substring(13,14) === ':'
+        && value.substring(16,17) === ':'
+    ) {
+        value = value.substring(0,4).concat(
+            '-', value.substring(5,7),
+            '-', value.substring(8,10),
+            'T', value.substring(11,value.length)
+        )
+    }
+
+    // 2018-04-12T16:35:49.123+03:00
+    // 2018-05-12T16:35:49.123Z
+    // 2018-04-12T16:35:49.<9 digits>
+    // 2018-04-12T16:35:49
+    if (value.length >= 19
+        && value.length <= 29
+        && !IsEmpty(ToInt(value.substring(0,4)))
+        && value.substring(4,5) === '-'
+        && !IsEmpty(ToInt(value.substring(5,7)))
+        && value.substring(7,8) === '-'
+        && !IsEmpty(ToInt(value.substring(8,10)))
+        && value.substring(10,11) === 'T'
+        && value.substring(13,14) === ':'
+        && value.substring(16,17) === ':'
+    ) {
+        if (value[value.length-1].toLowerCase() === 'z') {
+            value = value.substring(0,value.length-1)
+        }
+        year = ToInt(value.substring(0,4))
+        month = ToInt(value.substring(5,7))
+        day = ToInt(value.substring(8,10))
+        hour = ToInt(value.substring(11,13))
+        minute = ToInt(value.substring(14,16))
+        second = ToInt(value.substring(17,19))
+        if (value.length === 29
+            && value.substring(19,20) === '.'
+            && !IsEmpty(ToInt(value.substring(20,23)))
+            && value.substring(23,24) === '+'
+            && !IsEmpty(ToInt(value.substring(24,26)))
+            && value.substring(26,27) === ':'
+            && !IsEmpty(ToInt(value.substring(27,29)))
+        ) {
+            millisecond = ToInt(value.substring(20,23))
+        } else if (value.length > 19
+            && value.substring(19,20) === '.'
+            && !IsEmpty(ToInt(value.substring(20,value.length)))
+        ) {
+            if (value.length === 21) {
+                millisecond = ToInt(value.substring(20,21)) * 100
+            } else if (value.length === 22) {
+                millisecond = ToInt(value.substring(20,22)) * 10
+            } else {
+                millisecond = ToInt(value.substring(20,23))
+            }
+        } else if (value.length != 19) {
+            year = undefined
+        }
+    } else
+    // 12.04.2018 16:35:49
+    // 12.04.2018 16:35
+    // 12.04.2018
+    // 12-04-2018 16:35:49
+    // 12-04-2018 16:35
+    // 12-04-2018
+    if (value.length >= 10
+        && value.length <= 19
+        && !IsEmpty(ToInt(value.substring(0,2)))
+        && ['.', '-'].includes(value.substring(2,3))
+        && !IsEmpty(ToInt(value.substring(3,5)))
+        && ['.', '-'].includes(value.substring(5,6))
+        && !IsEmpty(ToInt(value.substring(6,10)))
+        && value.substring(2,3) === value.substring(5,6)
+    ) {
+        day = ToInt(value.substring(0,2))
+        month = ToInt(value.substring(3,5))
+        year = ToInt(value.substring(6,10))
+
+        if (value.length === 19
+            && value.substring(10,11) === ' '
+            && !IsEmpty(ToInt(value.substring(11,13)))
+            && value.substring(13,14) === ':'
+            && !IsEmpty(ToInt(value.substring(14,16)))
+            && value.substring(16,17) === ':'
+            && !IsEmpty(ToInt(value.substring(17,19)))
+        ) {
+            hour = ToInt(value.substring(11,13))
+            minute = ToInt(value.substring(14,16))
+            second = ToInt(value.substring(17,19))
+        } else if (value.length === 16
+            && value.substring(10,11) === ' '
+            && !IsEmpty(ToInt(value.substring(11,13)))
+            && value.substring(13,14) === ':'
+            && !IsEmpty(ToInt(value.substring(14,16)))
+        ) {
+            hour = ToInt(value.substring(11,13))
+            minute = ToInt(value.substring(14,16))
+        } else if (value.length != 10) {
+            year = undefined
+        }
+    } else
+    // 2018-04-16
+    // 2018/04/16
+    if (value.length === 10
+        && !IsEmpty(ToInt(value.substring(0,4)))
+        && ['-', '/'].includes(value.substring(4,5))
+        && !IsEmpty(ToInt(value.substring(5,7)))
+        && ['-', '/'].includes(value.substring(7,8))
+        && !IsEmpty(ToInt(value.substring(8,10)))
+    ) {
+        year = ToInt(value.substring(0,4))
+        month = ToInt(value.substring(5,7))
+        day = ToInt(value.substring(8,10))
+    } else
+    // 20180416
+    if (value.length === 8
+        && !IsEmpty(ToInt(value.substring(0,value.length)))
+    ) {
+        year = ToInt(value.substring(0,4))
+        month = ToInt(value.substring(4,6))
+        day = ToInt(value.substring(6,8))
+    } else {
+        year = undefined
+    }
+
+    if (!IsEmpty(year)) {
+        if (year < 0 || year > 9999 || month < 1 || month > 12 || day < 1 || day > 31 || (month === 2 && day > 29) ||
+        hour < 0 || hour > 24 || minute < 0 || minute > 59 || second < 0 || second > 59) {
+            year = undefined
+        }
+    }
+
+    if (!IsEmpty(year)) {
+        const ret = new Date(year,month-1,day,hour,minute,second,millisecond)
+        return ret
+    }
+
+    return undefined
+}
+
+export function Prop(object: any, propertyName: string): any | undefined {
+    if (IsEmpty(object)) return undefined
+    for (const property in object) {
+        if (property.toLowerCase() === propertyName.toLowerCase()) {
+            return object[property]
+        }
+    }
+    return undefined
+}
+
+import { Dirs } from './dir'
+export { Dirs }

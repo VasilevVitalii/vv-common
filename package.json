@@ -1,0 +1,33 @@
+{
+    "name": "vv-common",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "node ./dist/test/index.js",
+        "update": "npx npm-check-updates -u && npm i && npm audit fix && node ./node_modules/vv-template-nodebackend/index.js",
+        "build": "tsc",
+        "precommit": "node ./.auto/precommit.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/VasilevVitalii/vv-common.git"
+    },
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/VasilevVitalii/vv-common/issues"
+    },
+    "homepage": "https://github.com/VasilevVitalii/vv-common#readme",
+    "devDependencies": {
+        "vv-template-nodebackend": "0.0.8",
+        "@types/node": "16.10.5",
+        "@typescript-eslint/eslint-plugin": "5.0.0",
+        "@typescript-eslint/parser": "5.0.0",
+        "eslint": "8.0.0",
+        "npm-check-updates": "11.8.5",
+        "prettier": "2.4.1",
+        "ts-node": "10.3.0",
+        "typescript": "4.4.4"
+    }
+}
