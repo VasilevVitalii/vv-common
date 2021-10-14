@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 const REGEX_INT=/^[+-]?\d+$/
-const REGEX_FLOAT=[/^[+-]?\d+(\.\d+)?$/, /^[+-]?\d+(\\,\d+)?$/]
+const REGEX_FLOAT=/^[+-]?\d+(\.\d+)?$/
 const REGEX_IP=/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
 const REGEX_GUID=/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
 
 /** Check object for undefined, null, NaN, empty string */
-export function IsEmpty(object: any): boolean {
+export function isEmpty(object: any): boolean {
     if (object === undefined || object === null) return true
     const type = typeof object
     if (type === 'number' && isNaN(object)) return true
@@ -13,28 +14,28 @@ export function IsEmpty(object: any): boolean {
 }
 
 /** Check object for function */
-export function IsFunction(object: any): boolean {
+export function isFunction(object: any): boolean {
     if (object === undefined || object === null) return false
     return typeof object === 'function'
 }
 
 /** Check object for GUID */
-export function IsGuid(object: any): boolean {
-    return !IsEmpty(object) && REGEX_GUID.test(object)
+export function isGuid(object: any): boolean {
+    return !isEmpty(object) && REGEX_GUID.test(object)
 }
 
 /** Check object for IP */
-export function IsIp(object: any): boolean {
-    return !IsEmpty(object) && REGEX_IP.test(object)
+export function isIp(object: any): boolean {
+    return !isEmpty(object) && REGEX_IP.test(object)
 }
 
 /** Return first non-empty parameter */
-export function Nz(object1: any, object2: any, ...objects: any[]): any {
-    if (!IsEmpty(object1)) return object1
-    if (!IsEmpty(object2)) return object2
-    if (IsEmpty(objects) || !Array.isArray(objects)) return undefined
+export function nz(object1: any, object2: any, ...objects: any[]): any {
+    if (!isEmpty(object1)) return object1
+    if (!isEmpty(object2)) return object2
+    if (isEmpty(objects) || !Array.isArray(objects)) return undefined
     for (let i = 0; i < objects.length; i++) {
-        if (!IsEmpty(objects[i])) return objects[i]
+        if (!isEmpty(objects[i])) return objects[i]
     }
     return undefined
 }
@@ -45,12 +46,12 @@ export function Nz(object1: any, object2: any, ...objects: any[]): any {
  * @param format format string, substrings - 'yyyy', 'yy' - year, 'mm' - month, 'dd' - day, 'hh' - hour, 'mi' - minute, 'ss' - second, 'msec' - millisecond OR '126' - 'yyyy-mm-ddThh:mi:ss.msec'
  * @example format example - 'yyyymmdd', 'yyyy-mm-dd', 'yyyy.mm.dd hh:mi:ss.msec'
  */
-export function DateFormat(date: Date, format: string): string {
+export function dateFormat(date: Date, format: string): string {
     if (format === '126') {
-        return DateFormat(date, 'yyyy-mm-ddThh:mi:ss.msec')
+        return dateFormat(date, 'yyyy-mm-ddThh:mi:ss.msec')
     }
 
-    if (IsEmpty(date)) return ''
+    if (isEmpty(date)) return ''
 
     const yyyy = date.getFullYear()
     const mm = date.getMonth() + 1
@@ -76,8 +77,8 @@ export function DateFormat(date: Date, format: string): string {
  * @param date date for convert
  * @param format 'dayInYear' - ordinal number of the day of the year, 'secInDay' - ordinal number of the second of the day
  */
-export function DateFormatOrdinal (date: Date, format: ('dayInYear' | 'secInDay')): string {
-    if (IsEmpty(date)) return ''
+export function dateFormatOrdinal (date: Date, format: ('dayInYear' | 'secInDay')): string {
+    if (isEmpty(date)) return ''
     if (format === 'dayInYear') {
         const numDayPrepare = date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()
         const numDay = Math.floor(numDayPrepare / 86400000)
@@ -94,8 +95,8 @@ export function DateFormatOrdinal (date: Date, format: ('dayInYear' | 'secInDay'
 }
 
 /** add second or minute or hour or day to date */
-export function DateAdd(date: Date, interval : ('second'|'minute'|'hour'|'day'), value: number): Date | undefined  {
-    if (IsEmpty(date) || IsEmpty(interval) || IsEmpty(value)) return undefined
+export function dateAdd(date: Date, interval : ('second'|'minute'|'hour'|'day'), value: number): Date | undefined  {
+    if (isEmpty(date) || isEmpty(interval) || isEmpty(value)) return undefined
     if (interval === 'second') {
         return new Date(date.getTime() + (value * 1000))
     } else if (interval === 'minute') {
@@ -108,10 +109,12 @@ export function DateAdd(date: Date, interval : ('second'|'minute'|'hour'|'day'),
     return undefined
 }
 
-// Equal two objects
-export function Equal(object1: any, object2: any): boolean {
-    const isEmpty1 = IsEmpty(object1)
-    const isEmpty2 = IsEmpty(object2)
+/**
+ * Equal two objects, if two string - with trim and lowerCase
+ */
+export function equal(object1: any, object2: any): boolean {
+    const isEmpty1 = isEmpty(object1)
+    const isEmpty2 = isEmpty(object2)
 
     if (isEmpty1 && isEmpty2) return true
     if (isEmpty1 && !isEmpty2) return false
@@ -124,7 +127,7 @@ export function Equal(object1: any, object2: any): boolean {
     if (t1 === 'number' && t2 === 'number' && object1 === object2) return true
     if (t1 === 'boolean' && t2 === 'boolean' && object1 === object2) return true
     if (object1 instanceof Date && object2 instanceof Date) {
-        return Equal(DateFormat(object1, '126'), DateFormat(object2, '126'))
+        return equal(dateFormat(object1, '126'), dateFormat(object2, '126'))
     }
     if (t1 === 'object' && t2 === 'object') {
         try {
@@ -138,15 +141,24 @@ export function Equal(object1: any, object2: any): boolean {
 }
 
 /** Convert value to string */
-export function ToString(value: any): string {
-    if (IsEmpty(value)) return ''
-    if (value instanceof Date) return DateFormat(value, '126')
+export function toString(value: any): string {
+    if (isEmpty(value)) return ''
+    if (value instanceof Date) return dateFormat(value, '126')
+    const type = typeof value
+    if (type === 'string') {
+        return value
+    }
+    if (type === 'boolean') {
+        if (value === true) return 'true'
+        if (value === false) return 'false'
+        return ''
+    }
     return value.toString()
 }
 
 /** Convert value to integer (number without precision) */
-export function ToInt(value: any): number | undefined {
-    if (IsEmpty(value)) {
+export function toInt(value: any): number | undefined {
+    if (isEmpty(value)) {
         return undefined
     }
     const type = typeof value
@@ -162,17 +174,17 @@ export function ToInt(value: any): number | undefined {
 }
 
 /** Convert value to float (number with precision) */
-export function ToFloat(value: any): number | undefined {
-    if (IsEmpty(value)) {
+export function toFloat(value: any): number | undefined {
+    if (isEmpty(value)) {
         return undefined
     }
     const type = typeof value
     if (type === 'number') {
         return value
     } else if (type === 'string') {
-        for (let i = 0; i < REGEX_FLOAT.length; i++) {
-            if (REGEX_FLOAT[i].test(value)) return parseFloat(value)
-        }
+        if (REGEX_FLOAT.test(value)) return parseFloat(value)
+        const value2 = (value as string).replace(/,/g, '.')
+        if (REGEX_FLOAT.test(value2)) return parseFloat(value2)
     } else if (type === 'boolean') {
         if (value === true) return 1
         if (value === false) return 0
@@ -181,8 +193,8 @@ export function ToFloat(value: any): number | undefined {
 }
 
 /** Convert value to boolean */
-export function ToBool(value: any): boolean | undefined {
-    if (IsEmpty(value)) {
+export function toBool(value: any): boolean | undefined {
+    if (isEmpty(value)) {
         return undefined
     }
     const type = typeof value
@@ -200,22 +212,24 @@ export function ToBool(value: any): boolean | undefined {
 
 /**
  * Convert value to date, known formats:
- * 2018-04-12T16:35:49.123+03:00
- * 2018-05-12T16:35:49.123Z
- * 2018-04-12T16:35:49.<9 digits>
- * 2018-04-12T16:35:49
- * 12.04.2018 16:35:49
- * 12.04.2018 16:35
- * 12.04.2018
- * 12-04-2018 16:35:49
- * 12-04-2018 16:35
- * 12-04-2018
- * 2018-04-16
- * 2018/04/16
- * 20180416
+ * @example
+ * '2018-04-12T16:35:49.123+03:00'
+ * '2018-05-12T16:35:49.123Z'
+ * '2018-04-12T16:35:49.<9 digits>'
+ * '2018-04-12T16:35:49'
+ * '12.04.2018 16:35:49'
+ * '12.04.2018 16:35'
+ * '12.04.2018'
+ * '12-04-2018 16:35:49'
+ * '12-04-2018 16:35'
+ * '12-04-2018'
+ * '2018-04-16'
+ * '2018/04/16'
+ * '2018.04.16'
+ * '20180416'
  */
-export function ToDate(value: any): Date | undefined {
-    if (IsEmpty(value)) {
+export function toDate(value: any): Date | undefined {
+    if (isEmpty(value)) {
         return undefined
     }
     if (value instanceof Date) {
@@ -255,11 +269,11 @@ export function ToDate(value: any): Date | undefined {
     // 2018-04-12T16:35:49
     if (value.length >= 19
         && value.length <= 29
-        && !IsEmpty(ToInt(value.substring(0,4)))
+        && !isEmpty(toInt(value.substring(0,4)))
         && value.substring(4,5) === '-'
-        && !IsEmpty(ToInt(value.substring(5,7)))
+        && !isEmpty(toInt(value.substring(5,7)))
         && value.substring(7,8) === '-'
-        && !IsEmpty(ToInt(value.substring(8,10)))
+        && !isEmpty(toInt(value.substring(8,10)))
         && value.substring(10,11) === 'T'
         && value.substring(13,14) === ':'
         && value.substring(16,17) === ':'
@@ -267,31 +281,31 @@ export function ToDate(value: any): Date | undefined {
         if (value[value.length-1].toLowerCase() === 'z') {
             value = value.substring(0,value.length-1)
         }
-        year = ToInt(value.substring(0,4))
-        month = ToInt(value.substring(5,7))
-        day = ToInt(value.substring(8,10))
-        hour = ToInt(value.substring(11,13))
-        minute = ToInt(value.substring(14,16))
-        second = ToInt(value.substring(17,19))
+        year = toInt(value.substring(0,4))
+        month = toInt(value.substring(5,7))
+        day = toInt(value.substring(8,10))
+        hour = toInt(value.substring(11,13))
+        minute = toInt(value.substring(14,16))
+        second = toInt(value.substring(17,19))
         if (value.length === 29
             && value.substring(19,20) === '.'
-            && !IsEmpty(ToInt(value.substring(20,23)))
+            && !isEmpty(toInt(value.substring(20,23)))
             && value.substring(23,24) === '+'
-            && !IsEmpty(ToInt(value.substring(24,26)))
+            && !isEmpty(toInt(value.substring(24,26)))
             && value.substring(26,27) === ':'
-            && !IsEmpty(ToInt(value.substring(27,29)))
+            && !isEmpty(toInt(value.substring(27,29)))
         ) {
-            millisecond = ToInt(value.substring(20,23))
+            millisecond = toInt(value.substring(20,23))
         } else if (value.length > 19
             && value.substring(19,20) === '.'
-            && !IsEmpty(ToInt(value.substring(20,value.length)))
+            && !isEmpty(toInt(value.substring(20,value.length)))
         ) {
             if (value.length === 21) {
-                millisecond = ToInt(value.substring(20,21)) * 100
+                millisecond = toInt(value.substring(20,21)) * 100
             } else if (value.length === 22) {
-                millisecond = ToInt(value.substring(20,22)) * 10
+                millisecond = toInt(value.substring(20,22)) * 10
             } else {
-                millisecond = ToInt(value.substring(20,23))
+                millisecond = toInt(value.substring(20,23))
             }
         } else if (value.length != 19) {
             year = undefined
@@ -305,72 +319,73 @@ export function ToDate(value: any): Date | undefined {
     // 12-04-2018
     if (value.length >= 10
         && value.length <= 19
-        && !IsEmpty(ToInt(value.substring(0,2)))
+        && !isEmpty(toInt(value.substring(0,2)))
         && ['.', '-'].includes(value.substring(2,3))
-        && !IsEmpty(ToInt(value.substring(3,5)))
+        && !isEmpty(toInt(value.substring(3,5)))
         && ['.', '-'].includes(value.substring(5,6))
-        && !IsEmpty(ToInt(value.substring(6,10)))
+        && !isEmpty(toInt(value.substring(6,10)))
         && value.substring(2,3) === value.substring(5,6)
     ) {
-        day = ToInt(value.substring(0,2))
-        month = ToInt(value.substring(3,5))
-        year = ToInt(value.substring(6,10))
+        day = toInt(value.substring(0,2))
+        month = toInt(value.substring(3,5))
+        year = toInt(value.substring(6,10))
 
         if (value.length === 19
             && value.substring(10,11) === ' '
-            && !IsEmpty(ToInt(value.substring(11,13)))
+            && !isEmpty(toInt(value.substring(11,13)))
             && value.substring(13,14) === ':'
-            && !IsEmpty(ToInt(value.substring(14,16)))
+            && !isEmpty(toInt(value.substring(14,16)))
             && value.substring(16,17) === ':'
-            && !IsEmpty(ToInt(value.substring(17,19)))
+            && !isEmpty(toInt(value.substring(17,19)))
         ) {
-            hour = ToInt(value.substring(11,13))
-            minute = ToInt(value.substring(14,16))
-            second = ToInt(value.substring(17,19))
+            hour = toInt(value.substring(11,13))
+            minute = toInt(value.substring(14,16))
+            second = toInt(value.substring(17,19))
         } else if (value.length === 16
             && value.substring(10,11) === ' '
-            && !IsEmpty(ToInt(value.substring(11,13)))
+            && !isEmpty(toInt(value.substring(11,13)))
             && value.substring(13,14) === ':'
-            && !IsEmpty(ToInt(value.substring(14,16)))
+            && !isEmpty(toInt(value.substring(14,16)))
         ) {
-            hour = ToInt(value.substring(11,13))
-            minute = ToInt(value.substring(14,16))
+            hour = toInt(value.substring(11,13))
+            minute = toInt(value.substring(14,16))
         } else if (value.length != 10) {
             year = undefined
         }
     } else
     // 2018-04-16
     // 2018/04/16
+    // 2018.04.16
     if (value.length === 10
-        && !IsEmpty(ToInt(value.substring(0,4)))
-        && ['-', '/'].includes(value.substring(4,5))
-        && !IsEmpty(ToInt(value.substring(5,7)))
-        && ['-', '/'].includes(value.substring(7,8))
-        && !IsEmpty(ToInt(value.substring(8,10)))
+        && !isEmpty(toInt(value.substring(0,4)))
+        && ['-', '/', '.'].includes(value.substring(4,5))
+        && !isEmpty(toInt(value.substring(5,7)))
+        && ['-', '/', '.'].includes(value.substring(7,8))
+        && !isEmpty(toInt(value.substring(8,10)))
     ) {
-        year = ToInt(value.substring(0,4))
-        month = ToInt(value.substring(5,7))
-        day = ToInt(value.substring(8,10))
+        year = toInt(value.substring(0,4))
+        month = toInt(value.substring(5,7))
+        day = toInt(value.substring(8,10))
     } else
     // 20180416
     if (value.length === 8
-        && !IsEmpty(ToInt(value.substring(0,value.length)))
+        && !isEmpty(toInt(value.substring(0,value.length)))
     ) {
-        year = ToInt(value.substring(0,4))
-        month = ToInt(value.substring(4,6))
-        day = ToInt(value.substring(6,8))
+        year = toInt(value.substring(0,4))
+        month = toInt(value.substring(4,6))
+        day = toInt(value.substring(6,8))
     } else {
         year = undefined
     }
 
-    if (!IsEmpty(year)) {
+    if (!isEmpty(year)) {
         if (year < 0 || year > 9999 || month < 1 || month > 12 || day < 1 || day > 31 || (month === 2 && day > 29) ||
         hour < 0 || hour > 24 || minute < 0 || minute > 59 || second < 0 || second > 59) {
             year = undefined
         }
     }
 
-    if (!IsEmpty(year)) {
+    if (!isEmpty(year)) {
         const ret = new Date(year,month-1,day,hour,minute,second,millisecond)
         return ret
     }
@@ -378,8 +393,15 @@ export function ToDate(value: any): Date | undefined {
     return undefined
 }
 
-export function Prop(object: any, propertyName: string): any | undefined {
-    if (IsEmpty(object)) return undefined
+/** return value if value is array*/
+export function toArray(value: any): Array<any> | undefined {
+    if (isEmpty(value) || !Array.isArray(value)) return undefined
+    return value
+}
+
+/** get prop from object by name with ignore match case */
+export function prop(object: any, propertyName: string): any | undefined {
+    if (isEmpty(object)) return undefined
     for (const property in object) {
         if (property.toLowerCase() === propertyName.toLowerCase()) {
             return object[property]
@@ -388,5 +410,8 @@ export function Prop(object: any, propertyName: string): any | undefined {
     return undefined
 }
 
-import { Dirs } from './dir'
-export { Dirs }
+import { guid } from './guid'
+export { guid }
+
+import { dir } from './dir'
+export { dir }

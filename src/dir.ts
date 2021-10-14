@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import fs from 'fs'
 import path from 'path'
-import { IsEmpty } from './index'
+import { isEmpty } from './index'
 
 export type TOptions = {
     mode: ('files' | 'paths' | 'all')
@@ -12,25 +13,25 @@ export type TResult = {
     fsstat: fs.Stats
 }
 
-export function Dirs(dir: string, options: TOptions, callback: (error: Error, result: TResult[]) => void) {
+export function dir(dir: string, options: TOptions, callback: (error: Error, result: TResult[]) => void) {
     let isSendCallback = false
-    if (IsEmpty(options)) {
+    if (isEmpty(options)) {
         options = {
             mode: 'all'
         }
     } else {
-        if (IsEmpty(options.mode)) options.mode = 'all'
+        if (isEmpty(options.mode)) options.mode = 'all'
     }
-    DirsInternal(dir, options, (error, result) => {
+    dirInternal(dir, options, (error, result) => {
         if (isSendCallback) return
         isSendCallback = true
         callback(
             error,
-            IsEmpty(result) || !Array.isArray(result) ? [] : result.sort((a,b) => {
+            isEmpty(result) || !Array.isArray(result) ? [] : result.sort((a,b) => {
                 if (a.path < b.path) return -1
                 if (a.path > b.path) return 1
-                const isEa = IsEmpty(a)
-                const isEb = IsEmpty(b)
+                const isEa = isEmpty(a)
+                const isEb = isEmpty(b)
                 if (isEa && !isEb) return -1
                 if (!isEa && isEb) return 1
                 if (a.file < b.file) return -1
@@ -41,11 +42,11 @@ export function Dirs(dir: string, options: TOptions, callback: (error: Error, re
     })
 }
 
-function DirsInternal(dir: string, options: TOptions, callback: (error: Error, result: TResult[]) => void) {
+function dirInternal(dir: string, options: TOptions, callback: (error: Error, result: TResult[]) => void) {
     let files = [] as TResult[]
 
     fs.readdir(dir, (error, list) => {
-        if (!IsEmpty(error)) {
+        if (!isEmpty(error)) {
             callback(new Error(`when read dir ${dir} - ${error.message}`), undefined)
             return
         }
@@ -55,10 +56,10 @@ function DirsInternal(dir: string, options: TOptions, callback: (error: Error, r
         list.forEach(fileRelative => {
             const fileAbsolute = path.resolve(dir, fileRelative)
             fs.stat(fileAbsolute, function(error, stat) {
-                if (!IsEmpty(error)) {
+                if (!isEmpty(error)) {
                     callback(new Error(`when get stat for file/dir ${fileAbsolute} - ${error.message}`), undefined)
                 }
-                if (!IsEmpty(stat)) {
+                if (!isEmpty(stat)) {
                     if (stat.isDirectory()) {
                         if (options.mode === 'all' || options.mode === 'paths') {
                             files.push({
@@ -67,8 +68,8 @@ function DirsInternal(dir: string, options: TOptions, callback: (error: Error, r
                                 fsstat: stat,
                             })
                         }
-                        DirsInternal(fileAbsolute, options, function(error, res) {
-                            if (!IsEmpty(error)) {
+                        dirInternal(fileAbsolute, options, function(error, res) {
+                            if (!isEmpty(error)) {
                                 callback(error, undefined)
                             }
                             files = files.concat(res)
