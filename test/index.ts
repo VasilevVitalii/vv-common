@@ -163,6 +163,13 @@ if (
     OnError()
 }
 
+OnTest('equal')
+if (
+    !vv.equal(undefined, null) || !vv.equal(undefined, '') || !vv.equal('', null)
+) {
+    OnError()
+}
+
 OnTest('prop')
 if (vv.prop(KNOWN_OBJ, 'AAA') !== 5 || vv.prop(KNOWN_OBJ, 'bbb') !== '1'  ||
     vv.prop(KNOWN_OBJ, 'Ddd') !== '1977-11-16T14:30:42.555' ||
