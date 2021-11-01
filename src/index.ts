@@ -4,6 +4,17 @@ const REGEX_FLOAT=/^[+-]?\d+(\.\d+)?$/
 const REGEX_IP=/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
 const REGEX_GUID=/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
 
+const dateFormatter = new Intl.DateTimeFormat('en-CA', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    fractionalSecondDigits: 3
+})
+
 /** Check object for undefined, null, NaN, empty string */
 export function isEmpty(object: any): boolean {
     if (object === undefined || object === null) return true
@@ -48,7 +59,9 @@ export function nz(object1: any, object2: any, ...objects: any[]): any {
  */
 export function dateFormat(date: Date, format: string): string {
     if (format === '126') {
-        return dateFormat(date, 'yyyy-mm-ddThh:mi:ss.msec')
+        if (isEmpty(date)) return ''
+        const s = dateFormatter.format(date)
+        return s.replace(/, /g, 'T') //`${s.substring(0, 10)}T${s.substring(12,24)}`
     }
 
     if (isEmpty(date)) return ''
