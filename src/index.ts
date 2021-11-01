@@ -61,7 +61,7 @@ export function dateFormat(date: Date, format: string): string {
     if (format === '126') {
         if (isEmpty(date)) return ''
         const s = dateFormatter.format(date)
-        return s.replace(/, /g, 'T') //`${s.substring(0, 10)}T${s.substring(12,24)}`
+        return `${s.substring(0, 10)}T${s.substring(12,24)}`
     }
 
     if (isEmpty(date)) return ''
