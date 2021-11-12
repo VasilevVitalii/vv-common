@@ -200,6 +200,49 @@ if (g1 === g2 || !vv.isGuid(g1) || !vv.isGuid(g2)) {
     OnError()
 }
 
+OnTest('PackajeJsonParse')
+const p = [
+    '{',
+    '    "name": "vv-common",',
+    '    "version": "0.0.5",',
+    '    "description": "many small functions for everyday use",',
+    '    "main": "dist/src/index.js",',
+    '    "scripts": {',
+    '        "test": "node ./dist/test/index.js",',
+    '        "update": "npx npm-check-updates -u && npm i && npm audit fix && node ./node_modules/vv-template-nodebackend/index.js",',
+    '        "build": "tsc",',
+    '        "precommit": "node ./.auto/precommit.js"',
+    '    },',
+    '    "repository": {',
+    '        "type": "git",',
+    '        "url": "git+https://github.com/VasilevVitalii/vv-common.git"',
+    '    },',
+    '    "author": "Vitalii Vasilev",',
+    '    "license": "MIT",',
+    '    "bugs": {',
+    '        "url": "https://github.com/VasilevVitalii/vv-common/issues"',
+    '    },',
+    '    "homepage": "https://github.com/VasilevVitalii/vv-common#readme",',
+    '    "devDependencies": {',
+    '        "vv-template-nodebackend": "0.0.12",',
+    '        "@types/node": "16.11.6",',
+    '        "@typescript-eslint/eslint-plugin": "5.2.0",',
+    '        "@typescript-eslint/parser": "5.2.0",',
+    '        "eslint": "8.1.0",',
+    '        "npm-check-updates": "11.8.5",',
+    '        "prettier": "2.4.1",',
+    '        "ts-node": "10.4.0",',
+    '        "typescript": "4.4.4"',
+    '    }',
+    '}',
+].join('\n')
+const pp = vv.PackajeJsonParse(p)
+if (
+    pp.name !== 'vv-common' || pp.version !== '0.0.5' || pp.scripts.length <= 0 || pp.dependencies.length > 0 || pp.devDependencies.length <= 0
+) {
+    OnError()
+}
+
 if (countErrors > 0) {
     console.warn(`FAILED ${countErrors} TESTS`)
 } else {

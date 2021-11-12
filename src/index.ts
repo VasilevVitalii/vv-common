@@ -428,3 +428,6 @@ export { guid }
 
 import { dir } from './dir'
 export { dir }
+
+import { PackajeJsonParse } from './packageJson'
+export { PackajeJsonParse }
