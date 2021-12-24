@@ -14,20 +14,6 @@ const KNOWN_OBJ = {
     arr2: [1, 2, 3]
 }
 
-// const f = new Intl.DateTimeFormat('en-CA', {
-//     year: 'numeric',
-//     month: '2-digit',
-//     day: '2-digit',
-//     hour12: false,
-//     hour: '2-digit',
-//     minute: '2-digit',
-//     second: '2-digit',
-//     fractionalSecondDigits: 3
-// })
-//console.log(f.format(KNOWN_DATE1))
-//console.log(KNOWN_DATE1.toLocaleString())
-//console.log(new Date(u).toISOString())
-
 let testPosition = 0
 let countErrors = 0
 
@@ -248,4 +234,3 @@ if (countErrors > 0) {
 } else {
     console.log(`TESTS ${testPosition} DONE`)
 }
-
