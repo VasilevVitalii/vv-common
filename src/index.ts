@@ -94,6 +94,56 @@ export function dateFormatOrdinal (date: Date, format: ('dayInYear' | 'secInDay'
     return ''
 }
 
+/**
+ * get msec as count days, hours, seconds, milliseconds
+ * @param milliseconds
+ */
+export function dateParts (milliseconds: number): {day: number, hour: number, minute: number, second: number, millisecond: number } {
+    const oneSec = 1000
+    const oneMin = 60000
+    const oneHour = 3600000
+    const oneDay = 86400000
+
+    const result = {
+        day: 0,
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0
+    }
+    if (isEmpty(milliseconds)) return result
+    if (milliseconds < oneSec) {
+        result.millisecond = milliseconds
+    } else if (milliseconds < oneMin) {
+        result.second = Math.floor(milliseconds / oneSec)
+        result.millisecond = milliseconds - result.second * oneSec
+    } else if (milliseconds < oneHour) {
+        result.minute = Math.floor(milliseconds / oneMin)
+        const remain = milliseconds - (result.minute * oneMin)
+        result.second = Math.floor(remain / oneSec)
+        result.millisecond = remain - result.second * oneSec
+    } else {
+        result.day = Math.floor(milliseconds / oneDay)
+        let remain = milliseconds - (result.day * oneDay)
+        result.hour = Math.floor(remain / oneHour)
+        remain = remain - (result.hour * oneHour)
+        result.minute = Math.floor(remain / oneMin)
+        remain = remain - (result.minute * oneMin)
+        result.second = Math.floor(remain / oneSec)
+        result.millisecond = remain - result.second * oneSec
+
+        // const msecDay = result.day * oneDay
+        // result.hour = Math.floor((milliseconds - msecDay) / oneHour)
+        // const msecHour = result.hour * oneHour
+        // result.minute = Math.floor((milliseconds - msecDay - msecHour) / oneMin)
+        // const msecMin = result.minute * oneMin
+        // result.second = Math.floor((milliseconds - msecDay - msecHour - msecMin) / oneSec)
+        // result.millisecond = milliseconds - msecDay - msecHour - msecMin - result.second * oneSec
+    }
+
+    return result
+}
+
 /** add second or minute or hour or day to date */
 export function dateAdd(date: Date, interval : ('second'|'minute'|'hour'|'day'), value: number): Date | undefined  {
     if (isEmpty(date) || isEmpty(interval) || isEmpty(value)) return undefined

@@ -98,6 +98,24 @@ if (
     OnError()
 }
 
+OnTest('dateParts')
+if (
+    JSON.stringify(vv.dateParts(8)) !== JSON.stringify({day: 0, hour: 0, minute: 0, second: 0, millisecond: 8 }) ||
+    JSON.stringify(vv.dateParts(999)) !== JSON.stringify({day: 0, hour: 0, minute: 0, second: 0, millisecond: 999 }) ||
+    JSON.stringify(vv.dateParts(1000)) !== JSON.stringify({day: 0, hour: 0, minute: 0, second: 1, millisecond: 0 }) ||
+    JSON.stringify(vv.dateParts(5123)) !== JSON.stringify({day: 0, hour: 0, minute: 0, second: 5, millisecond: 123 }) ||
+    JSON.stringify(vv.dateParts(59999)) !== JSON.stringify({day: 0, hour: 0, minute: 0, second: 59, millisecond: 999 }) ||
+    JSON.stringify(vv.dateParts(60000)) !== JSON.stringify({day: 0, hour: 0, minute: 1, second: 0, millisecond: 0 }) ||
+    JSON.stringify(vv.dateParts(3599999)) !== JSON.stringify({day: 0, hour: 0, minute: 59, second: 59, millisecond: 999 }) ||
+    JSON.stringify(vv.dateParts(3600000)) !== JSON.stringify({day: 0, hour: 1, minute: 0, second: 0, millisecond: 0 }) ||
+    JSON.stringify(vv.dateParts(3600000 + 60000 * 2 + 1000 * 3 + 42)) !== JSON.stringify({day: 0, hour: 1, minute: 2, second: 3, millisecond: 42 }) ||
+    JSON.stringify(vv.dateParts(86399999)) !== JSON.stringify({day: 0, hour: 23, minute: 59, second: 59, millisecond: 999 }) ||
+    JSON.stringify(vv.dateParts(86400000)) !== JSON.stringify({day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }) ||
+    JSON.stringify(vv.dateParts(86400000 + 3600000 * 16 + 60000 * 30 + 1000 * 42 + 321)) !== JSON.stringify({day: 1, hour: 16, minute: 30, second: 42, millisecond: 321 })
+) {
+    OnError()
+}
+
 OnTest('dateAdd')
 if (
     vv.dateFormat(vv.dateAdd(KNOWN_DATE1, 'day', 1), '126') !== '1977-11-17T14:30:42.555' ||
