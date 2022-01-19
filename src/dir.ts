@@ -113,42 +113,5 @@ function dirInternal(state: TState, callback: (error: Error) => void) {
                 }
             })
         })
-
-        // list.forEach(fileRelative => {
-        //     const fileAbsolute = path.resolve(dir, fileRelative)
-        //     fs.stat(fileAbsolute, function(error, stat) {
-        //         if (!isEmpty(error)) {
-        //             callback(new Error(`when get stat for file/dir ${fileAbsolute} - ${error.message}`))
-        //         }
-        //         if (isEmpty(stat)) return
-
-        //         if (stat.isDirectory()) {
-        //             if (state.options.mode === 'all' || state.options.mode === 'paths') {
-        //                 state.result.push({
-        //                     file: undefined,
-        //                     path: fileAbsolute,
-        //                     fsstat: stat,
-        //                 })
-        //             }
-        //             dirInternal(fileAbsolute, state, error => {
-        //                 if (!isEmpty(error)) {
-        //                     callback(error)
-        //                 }
-        //                 //files = files.concat(res)
-        //                 //if (!--pending) callback(undefined, files)
-        //             })
-        //         } else if (stat.isFile()) {
-        //             if ((state.options.mode === 'all' || state.options.mode === 'files')) {
-        //                 state.result.push({
-        //                     file: fileRelative,
-        //                     path: dir,
-        //                     fsstat: stat,
-        //                 })
-        //             }
-        //         }
-        //     })
-        // })
-
-        //callback(undefined)
     })
 }

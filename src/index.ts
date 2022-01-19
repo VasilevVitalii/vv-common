@@ -468,3 +468,6 @@ export { dir }
 
 import { PackajeJsonParse } from './packageJson'
 export { PackajeJsonParse }
+
+import { readFiles } from './readFiles'
+export { readFiles }

@@ -1,4 +1,4 @@
-import { toString, toArray, prop, nz, isEmpty } from './index'
+import { toString, prop, isEmpty } from './index'
 
 export type TPackajeJsonDependency = {
     package: string,
