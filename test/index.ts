@@ -22,7 +22,6 @@ function OnTest(name: string) {
     console.log(`RUN TEST "${name}" #${testPosition}`)
 }
 
-
 function OnError() {
     countErrors++
     console.warn(`TEST #${testPosition} FAIL`)
@@ -137,6 +136,11 @@ if (vv.toString('aa') !== 'aa' || vv.toString(100.34) !== '100.34' || vv.toStrin
 
 OnTest('toInt')
 if (vv.toInt('aa') !== undefined || vv.toInt(100.34) !== undefined || vv.toInt(true) !== 1 || vv.toInt(KNOWN_DATE1) !== undefined || vv.toInt('42') !== 42 || vv.toInt('-42') !== -42) {
+    OnError()
+}
+
+OnTest('toIntPositive')
+if (vv.toIntPositive('aa') !== undefined || vv.toIntPositive(100.34) !== undefined || vv.toIntPositive(true) !== 1 || vv.toIntPositive(KNOWN_DATE1) !== undefined || vv.toIntPositive('42') !== 42 || vv.toIntPositive('-42') !== undefined) {
     OnError()
 }
 

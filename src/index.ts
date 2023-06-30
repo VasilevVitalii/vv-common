@@ -223,6 +223,12 @@ export function toInt(value: any): number | undefined {
     return undefined
 }
 
+/** Convert value to positive integer (number without precision and greater than or equal to zero) */
+export function toIntPositive(value: any): number | undefined {
+    const res = toInt(value)
+    return res !== undefined && res < 0 ? undefined : res
+}
+
 /** Convert value to float (number with precision) */
 export function toFloat(value: any): number | undefined {
     if (isEmpty(value)) {
