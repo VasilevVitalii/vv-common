@@ -63,8 +63,17 @@ OnTest('nz')
 if (vv.nz('a','b') !== 'a' || vv.nz(undefined,null,undefined,NaN,'','ss') !== 'ss') {
     OnError()
 }
-
-
+OnTest('replace')
+if (
+    vv.replace('a','b',null) !== null ||
+    vv.replace('a','b',undefined) !== undefined ||
+    vv.replace('a','b','1a2') !== '1b2' ||
+    vv.replace('a','b','1a2a3') !== '1b2b3' ||
+    vv.replace('a','b','1a2b3') !== '1b2b3' ||
+    vv.replace('a','b','123') !== '123'
+) {
+    OnError()
+}
 OnTest('dateFormat')
 if (
     vv.dateFormat(KNOWN_DATE1, '126') !== '1977-11-16T14:30:42.555' ||

@@ -40,6 +40,13 @@ export function nz(object1: any, object2: any, ...objects: any[]): any {
     return undefined
 }
 
+/** Replace all substrings in string */
+export function replace(searchValue: string, replaceValue: string, source?: string) {
+    if (isEmpty(source)) return source
+    const res = source.replace(searchValue, replaceValue)
+    return res === source ? source : replace(searchValue, replaceValue, res)
+}
+
 /**
  * convert Date to String
  * @param date date for convert
