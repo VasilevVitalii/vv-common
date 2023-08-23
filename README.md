@@ -15,26 +15,26 @@ import * as vv from 'vv-common'
 ### isEmpty
 check variable is empty
 ```typescript
-console.log(vv.isEmpty(false))				//false
-console.log(vv.isEmpty('asf'))				//false
-console.log(vv.isEmpty({a: 5}))				//false
-console.log(vv.isEmpty({}))					//false
-console.log(vv.isEmpty(undefined))			//true
-console.log(vv.isEmpty('  '))				//true
-console.log(vv.isEmpty(null))				//true
-console.log(vv.isEmpty(NaN))				//true
+console.log(vv.isEmpty(false))		//false
+console.log(vv.isEmpty('asf'))		//false
+console.log(vv.isEmpty({a: 5}))		//false
+console.log(vv.isEmpty({}))			//false
+console.log(vv.isEmpty(undefined))	//true
+console.log(vv.isEmpty('  '))		//true
+console.log(vv.isEmpty(null))		//true
+console.log(vv.isEmpty(NaN))		//true
 ```
 ### isFunction
 check object is function
 ```typescript
 console.log()
 
-console.log(vv.isFunction(false))			//false
-console.log(vv.isFunction('asf'))			//false
-console.log(vv.isFunction({a: 5}))			//false
-console.log(vv.isFunction({}))				//false
-console.log(vv.isFunction(undefined))		//false
-console.log(vv.isFunction(null)))			//false
+console.log(vv.isFunction(false))		//false
+console.log(vv.isFunction('asf'))		//false
+console.log(vv.isFunction({a: 5}))		//false
+console.log(vv.isFunction({}))			//false
+console.log(vv.isFunction(undefined))	//false
+console.log(vv.isFunction(null)))		//false
 
 function thisFunction() {
 	console.log('I am function')
@@ -46,14 +46,14 @@ console.log(vv.isFunction(() => {}))		//true
 ### isGuid
 check string is guid
 ```typescript
-console.log(vv.isGuid(false))				//false
-console.log(vv.isGuid('asf'))				//false
-console.log(vv.isGuid({a: 5}))				//false
-console.log(vv.isGuid({}))					//false
-console.log(vv.isGuid(undefined))			//false
-console.log(vv.isGuid('  '))				//false
-console.log(vv.isGuid(null))				//false
-console.log(vv.isGuid(NaN))					//false
+console.log(vv.isGuid(false))		//false
+console.log(vv.isGuid('asf'))		//false
+console.log(vv.isGuid({a: 5}))		//false
+console.log(vv.isGuid({}))			//false
+console.log(vv.isGuid(undefined))	//false
+console.log(vv.isGuid('  '))		//false
+console.log(vv.isGuid(null))		//false
+console.log(vv.isGuid(NaN))			//false
 console.log(vv.isGuid('A7C52954-1823-4C43-BBB4-C6099475B4C1'))	//true
 console.log(vv.isGuid('00000000-0000-0000-0000-000000000000'))	//true
 ```
@@ -61,17 +61,17 @@ console.log(vv.isGuid('00000000-0000-0000-0000-000000000000'))	//true
 check string is IP address
 ```typescript
 console.log()
-console.log(vv.isIp('192.999.5.6'))			//false
-console.log(vv.isIp(false))					//false
-console.log(vv.isIp('asf'))					//false
-console.log(vv.isIp({a: 5}))				//false
-console.log(vv.isIp({}))					//false
-console.log(vv.isIp(undefined))				//false
-console.log(vv.isIp('  '))					//false
-console.log(vv.isIp(null))					//false
-console.log(vv.isIp(NaN))					//false
-console.log(vv.isIp('8.8.8.8'))				//true
-console.log(vv.isIp('192.168.0.42'))		//true
+console.log(vv.isIp('192.999.5.6'))		//false
+console.log(vv.isIp(false))				//false
+console.log(vv.isIp('asf'))				//false
+console.log(vv.isIp({a: 5}))			//false
+console.log(vv.isIp({}))				//false
+console.log(vv.isIp(undefined))			//false
+console.log(vv.isIp('  '))				//false
+console.log(vv.isIp(null))				//false
+console.log(vv.isIp(NaN))				//false
+console.log(vv.isIp('8.8.8.8'))			//true
+console.log(vv.isIp('192.168.0.42'))	//true
 ```
 ### nz
 return first non-empty (see function isEmpty) parameter
@@ -159,63 +159,63 @@ console.log(vv.toString(DDD) )		//'1977-11-16T14:30:42.555'
 ### toInt
 convert variable to integer value
 ```typescript
-console.log(vv.toInt('aa'))				//undefined
-console.log(vv.toInt(100.34))			//undefined
-console.log(vv.toInt(true))				//1
-console.log(vv.toInt(false))			//0
-console.log(vv.toInt(new Date()))		//undefined
-console.log(vv.toInt('42'))				//42
-console.log(vv.toInt('-42'))			//-42
+console.log(vv.toInt('aa'))			//undefined
+console.log(vv.toInt(100.34))		//undefined
+console.log(vv.toInt(true))			//1
+console.log(vv.toInt(false))		//0
+console.log(vv.toInt(new Date()))	//undefined
+console.log(vv.toInt('42'))			//42
+console.log(vv.toInt('-42'))		//-42
 ```
 ### toIntPositive
 convert variable to positive integer value
 ```typescript
-console.log(vv.toInt('aa'))				//undefined
-console.log(vv.toInt(100.34))			//undefined
-console.log(vv.toInt(true))				//1
-console.log(vv.toInt(new Date()))		//undefined
-console.log(vv.toInt('42'))				//42
-console.log(vv.toInt('-42'))			//undefined
+console.log(vv.toInt('aa'))			//undefined
+console.log(vv.toInt(100.34))		//undefined
+console.log(vv.toInt(true))			//1
+console.log(vv.toInt(new Date()))	//undefined
+console.log(vv.toInt('42'))			//42
+console.log(vv.toInt('-42'))		//undefined
 ```
 ### toFloat
 convert variable to float value
 ```typescript
-console.log(vv.toFloat('aa'))			//undefined
-console.log(vv.toFloat(100.34))			//100.34
-console.log(vv.toFloat(true))			//1
-console.log(vv.toFloat(false))			//0
-console.log(vv.toFloat(new Date()))		//undefined
-console.log(vv.toFloat('42'))			//42
-console.log(vv.toFloat('-42'))			//-42
-console.log(vv.toFloat('42.11'))		//42.11
-console.log(vv.toFloat('-42.22'))		//-42.22
-console.log(vv.toFloat('42,11'))		//42.11
-console.log(vv.toFloat('-42,22'))		//-42.22
+console.log(vv.toFloat('aa'))		//undefined
+console.log(vv.toFloat(100.34))		//100.34
+console.log(vv.toFloat(true))		//1
+console.log(vv.toFloat(false))		//0
+console.log(vv.toFloat(new Date()))	//undefined
+console.log(vv.toFloat('42'))		//42
+console.log(vv.toFloat('-42'))		//-42
+console.log(vv.toFloat('42.11'))	//42.11
+console.log(vv.toFloat('-42.22'))	//-42.22
+console.log(vv.toFloat('42,11'))	//42.11
+console.log(vv.toFloat('-42,22'))	//-42.22
 ```
 ### toBool
 convert variable to boolean value
 ```typescript
-console.log(vv.toBool('aa'))			//undefined
-console.log(vv.toBool(100.34))			//undefined
-console.log(vv.toBool(true))			//true
-console.log(vv.toBool(false))			//false
-console.log(vv.toBool(new Date()))		//undefined
-console.log(vv.toBool('true'))			//true
-console.log(vv.toBool('1'))				//true
-console.log(vv.toBool(1))				//true
-console.log(vv.toBool('false'))			//false
-console.log(vv.toBool('0'))				//false
-console.log(vv.toBool(0))				//false
-console.log(vv.toBool('yes'))			//true
-console.log(vv.toBool('no'))			//false
+console.log(vv.toBool('aa'))		//undefined
+console.log(vv.toBool(100.34))		//undefined
+console.log(vv.toBool(true))		//true
+console.log(vv.toBool(false))		//false
+console.log(vv.toBool(new Date()))	//undefined
+console.log(vv.toBool('true'))		//true
+console.log(vv.toBool('1'))			//true
+console.log(vv.toBool(1))			//true
+console.log(vv.toBool('false'))		//false
+console.log(vv.toBool('0'))			//false
+console.log(vv.toBool(0))			//false
+console.log(vv.toBool('yes'))		//true
+console.log(vv.toBool('no'))		//false
 ```
 ### toDate
 convert variable to date value
 ```typescript
 const DDD = new Date(1977, 10, 16, 14, 30, 42, 555)
-console.log(vv.toDate('aa'))			//undefined
-console.log(vv.toDate(1))				//undefined
-console.log(vv.toDate(true))			//undefined
+console.log(vv.toDate('aa'))	//undefined
+console.log(vv.toDate(1))		//undefined
+console.log(vv.toDate(true))	//undefined
 console.log(vv.dateFormat(vv.toDate(DDD), '126'))						//'1977-11-16T14:30:42.555'
 console.log(vv.dateFormat(vv.toDate('1977-11-16T14:30:42.555'), '126'))	//'1977-11-16T14:30:42.555'
 console.log(vv.dateFormat(vv.toDate('1977.11.16'), '126'))				//'1977-11-16T00:00:00.000'
@@ -224,28 +224,28 @@ console.log(vv.dateFormat(vv.toDate('1977-11-16'), '126'))				//'1977-11-16T00:0
 ### toArray
 convert variable to array
 ```typescript
-console.log(vv.toArray('aa'))		//undefined
-console.log(vv.toArray(100.34))		//undefined
-console.log(vv.toArray([]))			//[]
-console.log(vv.toArray([1,2]))		//[1,2]
+console.log(vv.toArray('aa'))	//undefined
+console.log(vv.toArray(100.34))	//undefined
+console.log(vv.toArray([]))		//[]
+console.log(vv.toArray([1,2]))	//[1,2]
 ```
 ### equal
 compare two variables
 ```typescript
 const DDD1 = new Date(1977, 10, 16, 14, 30, 42, 555)
 const DDD2 = new Date(1977, 10, 16, 14, 30, 42, 555)
-console.log(vv.equal(' AA ', 'aa'))					//true
-console.log(vv.equal(DDD1,DDD2))					//true
-console.log(vv.equal(DDD1,new Date()))				//false
-console.log(vv.equal(undefined, undefined))			//true
-console.log(vv.equal(4, undefined))					//false
-console.log(vv.equal('a', 'b'))						//false
-console.log(vv.equal(10,10))						//true
-console.log(vv.equal(undefined, null))				//true
-console.log(vv.equal(undefined, NaN))				//true
-console.log(vv.equal(null, NaN))					//true
-console.log(vv.equal(undefined, ''))				//true
-console.log(vv.equal('', null))						//true
+console.log(vv.equal(' AA ', 'aa'))			//true
+console.log(vv.equal(DDD1,DDD2))			//true
+console.log(vv.equal(DDD1,new Date()))		//false
+console.log(vv.equal(undefined, undefined))	//true
+console.log(vv.equal(4, undefined))			//false
+console.log(vv.equal('a', 'b'))				//false
+console.log(vv.equal(10,10))				//true
+console.log(vv.equal(undefined, null))		//true
+console.log(vv.equal(undefined, NaN))		//true
+console.log(vv.equal(null, NaN))			//true
+console.log(vv.equal(undefined, ''))		//true
+console.log(vv.equal('', null))				//true
 ```
 ### prop
 return property from object
@@ -255,16 +255,16 @@ const OBJ = {
     bbb: '1',
     arr: [1, 2, 3]
 }
-console.log(vv.prop(OBJ, 'AAA'))		//5
-console.log(vv.prop(OBJ, 'bbb'))		//'1'
-console.log(vv.prop(OBJ, 'Arr'))		//[1,2,3]
-console.log(vv.prop(OBJ, 'yyy'))		//undefined
+console.log(vv.prop(OBJ, 'AAA'))	//5
+console.log(vv.prop(OBJ, 'bbb'))	//'1'
+console.log(vv.prop(OBJ, 'Arr'))	//[1,2,3]
+console.log(vv.prop(OBJ, 'yyy'))	//undefined
 ```
 ### guid
 very simple gererator non-uniq guid
 ```typescript
-console.log(vv.guid())					//388CEC00-34C3-45F0-8542-C61187BA2B6B
-console.log(vv.guid())					//C38FDE41-1086-4B30-CBB1-DC5CDF18E1D6
+console.log(vv.guid())	//388CEC00-34C3-45F0-8542-C61187BA2B6B
+console.log(vv.guid())	//C38FDE41-1086-4B30-CBB1-DC5CDF18E1D6
 ```
 ### PackajeJsonParse
 return package.json as object
@@ -305,7 +305,7 @@ const p = [
     '}',
 ].join('\n')
 const pp = vv.PackajeJsonParse(p)
-console.log(pp.name)						//'vv-common'
-console.log(pp.version)						//'0.0.5'
-console.log(pp.devDependencies.length)		//9
+console.log(pp.name)					//'vv-common'
+console.log(pp.version)					//'0.0.5'
+console.log(pp.devDependencies.length)	//9
 ```
