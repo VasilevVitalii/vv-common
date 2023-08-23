@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 /** Generate NON-UNIQUE guid by very-sery simple idea, based only on Math.random() */
-export function guid(): string {
-    return `${r()}${r()}${r()}${r()}${r()}${r()}${r()}${r()}-${r()}${r()}${r()}${r()}-${r()}${r()}${r()}${r()}-${r()}${r()}${r()}${r()}-${r()}${r()}${r()}${r()}${r()}${r()}${r()}${r()}${r()}${r()}${r()}${r()}`
+export function guid(dividor?: '-' | ''): string {
+    const d = dividor === '' ? '' : '-'
+    return `${r()}${r()}${r()}${r()}${r()}${r()}${r()}${r()}${d}${r()}${r()}${r()}${r()}${d}4${r()}${r()}${r()}${d}${r()}${r()}${r()}${r()}${d}${r()}${r()}${r()}${r()}${r()}${r()}${r()}${r()}${r()}${r()}${r()}${r()}`
 }
 
 function r(): string {

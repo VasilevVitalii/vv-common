@@ -267,8 +267,8 @@ export function toBool(value: any): boolean | undefined {
         if (value === 1) return true
         if (value === 0) return false
     } else if (type === 'string') {
-        if (['1', 'true', 'yes', 'ok'].includes(value.trim().toLowerCase())) return true
-        if (['0', 'false', 'no', 'cancel'].includes(value.trim().toLowerCase())) return false
+        if (['1', 'true', 'yes', 'ok', 'y'].includes(value.trim().toLowerCase())) return true
+        if (['0', 'false', 'no', 'cancel', 'n'].includes(value.trim().toLowerCase())) return false
     }
     return undefined
 }

@@ -139,12 +139,12 @@ if (
 }
 
 OnTest('toString')
-if (vv.toString('aa') !== 'aa' || vv.toString(100.34) !== '100.34' || vv.toString(true) !== 'true' || vv.toString(KNOWN_DATE1) !== '1977-11-16T14:30:42.555') {
+if (vv.toString(undefined) !== '' || vv.toString('aa') !== 'aa' || vv.toString(100.34) !== '100.34' || vv.toString(true) !== 'true' || vv.toString(KNOWN_DATE1) !== '1977-11-16T14:30:42.555') {
     OnError()
 }
 
 OnTest('toInt')
-if (vv.toInt('aa') !== undefined || vv.toInt(100.34) !== undefined || vv.toInt(true) !== 1 || vv.toInt(KNOWN_DATE1) !== undefined || vv.toInt('42') !== 42 || vv.toInt('-42') !== -42) {
+if (vv.toInt('aa') !== undefined || vv.toInt(100.34) !== undefined || vv.toInt(true) !== 1 || vv.toInt(false) !== 0 || vv.toInt(KNOWN_DATE1) !== undefined || vv.toInt('42') !== 42 || vv.toInt('-42') !== -42) {
     OnError()
 }
 
@@ -154,7 +154,7 @@ if (vv.toIntPositive('aa') !== undefined || vv.toIntPositive(100.34) !== undefin
 }
 
 OnTest('toFloat')
-if (vv.toFloat('aa') !== undefined || vv.toFloat(100.34) !== 100.34 || vv.toFloat(true) !== 1 || vv.toFloat(KNOWN_DATE1) !== undefined ||
+if (vv.toFloat('aa') !== undefined || vv.toFloat(100.34) !== 100.34 || vv.toFloat(true) !== 1 || vv.toFloat(false) !== 0 || vv.toFloat(KNOWN_DATE1) !== undefined ||
     vv.toFloat('42') !== 42 || vv.toFloat('-42') !== -42 ||
     vv.toFloat('42.11') !== 42.11 || vv.toFloat('-42.22') !== -42.22 ||
     vv.toFloat('42,11') !== 42.11 || vv.toFloat('-42,22') !== -42.22
@@ -172,11 +172,12 @@ if (vv.toBool('aa') !== undefined || vv.toBool(100.34) !== undefined || vv.toBoo
 
 OnTest('toDate')
 if (
-    vv.toDate('aa') !== undefined || vv.toDate(1) !== undefined || vv.toDate(true) !== undefined ||
+    vv.dateFormat(vv.toDate('aa'),'126') !== '' || vv.dateFormat(vv.toDate(1),'126') !== '' || vv.dateFormat(vv.toDate(true),'126') !== '' ||
     vv.dateFormat(vv.toDate(KNOWN_DATE1), '126') !== vv.dateFormat(KNOWN_DATE1,'126') ||
     vv.dateFormat(vv.toDate('1977-11-16T14:30:42.555'), '126') !== vv.dateFormat(KNOWN_DATE1, '126') ||
     vv.dateFormat(vv.toDate('1977.11.16'), '126') !== vv.dateFormat(new Date(1977, 10, 16), '126') ||
-    vv.dateFormat(vv.toDate('1977-11-16'), '126') !== vv.dateFormat(new Date(1977, 10, 16), '126')
+    vv.dateFormat(vv.toDate('1977-11-16'), '126') !== vv.dateFormat(new Date(1977, 10, 16), '126') ||
+    vv.toDate('aa') !== undefined || vv.toDate(1) !== undefined || vv.toDate(true) !== undefined
 ) {
     OnError()
 }
@@ -189,14 +190,8 @@ if (vv.toArray('aa') !== undefined || vv.toArray(100.34) !== undefined || JSON.s
 
 OnTest('equal')
 if (
-    !vv.equal(' AA ', 'aa') || !vv.equal(KNOWN_DATE1,KNOWN_DATE1)  || vv.equal(KNOWN_DATE1,KNOWN_DATE2) || !vv.equal(undefined, undefined) || vv.equal(4, undefined) ||  vv.equal('a', 'b') || !vv.equal(10,10)
-) {
-    OnError()
-}
-
-OnTest('equal')
-if (
-    !vv.equal(undefined, null) || !vv.equal(undefined, '') || !vv.equal('', null)
+    !vv.equal(' AA ', 'aa') || !vv.equal(KNOWN_DATE1,KNOWN_DATE1)  || vv.equal(KNOWN_DATE1,KNOWN_DATE2) || !vv.equal(undefined, undefined) || vv.equal(4, undefined) ||  vv.equal('a', 'b') || !vv.equal(10,10) ||
+    !vv.equal(undefined, null) || !vv.equal(undefined, NaN) || !vv.equal(null, NaN) || !vv.equal(undefined, '') || !vv.equal('', null)
 ) {
     OnError()
 }
