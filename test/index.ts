@@ -255,6 +255,23 @@ if (
     OnError()
 }
 
+const counter = {i: 0}
+console.log('first tick after 50 msec')
+const t = new vv.Timer(50, () => {
+    counter.i++
+    if (counter.i < 5) {
+        console.log('next tick after 100 msec')
+        t.nextTick(100)
+        return
+    }
+    if (counter.i < 10) {
+        console.log('next tick after 200 msec')
+        t.nextTick(200)
+        return
+    }
+    console.log('this last tick')
+})
+
 if (countErrors > 0) {
     console.warn(`FAILED ${countErrors} TESTS`)
 } else {

@@ -484,3 +484,7 @@ export { PackajeJsonParse }
 
 import { readFiles } from './readFiles'
 export { readFiles }
+
+import { Timer } from './timer'
+export { Timer }
+
