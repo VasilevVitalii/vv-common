@@ -17,9 +17,9 @@ export type TResult = {
 
 type TState = {
     options: TOptions,
-    currentDeep: number,
-    needScanDir: string[]
-    result: TResult[]
+    needScanDir: {dir: string, deep: number}[]
+    result: TResult[],
+    needScanIdx: number
 }
 
 export function dir(dir: string, options: TOptions, callback: (error: Error, result: TResult[]) => void) {
@@ -29,8 +29,8 @@ export function dir(dir: string, options: TOptions, callback: (error: Error, res
             mode: options?.mode,
             deep: options?.deep,
         },
-        currentDeep: 0,
-        needScanDir: [dir],
+        needScanDir: [{dir: dir, deep: 0}],
+        needScanIdx: 0,
         result: []
     }
     if (isEmpty(state.options.mode) || (state.options.mode !== 'all' && state.options.mode !== 'files' && state.options.mode !== 'paths')) {
@@ -60,17 +60,18 @@ export function dir(dir: string, options: TOptions, callback: (error: Error, res
 }
 
 function dirInternal(state: TState, callback: (error: Error) => void) {
-    state.currentDeep++
 
-    const dir = state.needScanDir.shift()
-    if (isEmpty(dir)) {
+    const stateIdx = state.needScanDir.findIndex(f => f.deep < state.options.deep)
+    const stateItem = stateIdx < 0 ? undefined : state.needScanDir.splice(stateIdx, 1)[0]
+
+    if (stateItem === undefined) {
         callback(undefined)
         return
     }
 
-    fs.readdir(dir, (error, list) => {
+    fs.readdir(stateItem.dir, (error, list) => {
         if (!isEmpty(error)) {
-            callback(new Error(`when read dir ${dir} - ${error.message}`))
+            callback(new Error(`when read dir ${stateItem} - ${error.message}`))
             return
         }
 
@@ -80,7 +81,7 @@ function dirInternal(state: TState, callback: (error: Error) => void) {
         }
 
         list.forEach((item, idx) => {
-            const fileAbsolute = path.resolve(dir, item)
+            const fileAbsolute = path.resolve(stateItem.dir, item)
             fs.stat(fileAbsolute, (error, stat) => {
                 if (error) {
                     callback(new Error(`when get stat for file/dir ${fileAbsolute} - ${error.message}`))
@@ -91,7 +92,7 @@ function dirInternal(state: TState, callback: (error: Error) => void) {
                         if ((state.options.mode === 'all' || state.options.mode === 'files')) {
                             state.result.push({
                                 file: item,
-                                path: dir,
+                                path: stateItem.dir,
                                 fsstat: stat,
                             })
                         }
@@ -103,9 +104,7 @@ function dirInternal(state: TState, callback: (error: Error) => void) {
                                 fsstat: stat,
                             })
                         }
-                        if (state.currentDeep < state.options.deep) {
-                            state.needScanDir.push(fileAbsolute)
-                        }
+                        state.needScanDir.push({dir: fileAbsolute, deep: stateItem.deep + 1})
                     }
                 }
                 if (idx + 1 === list.length) {
