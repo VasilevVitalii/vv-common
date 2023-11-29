@@ -11,13 +11,14 @@ export type TOptions = {
 
 export type TResult = {
     path: string,
+    subpath: string,
     file: string,
     fsstat: fs.Stats
 }
 
 type TState = {
     options: TOptions,
-    needScanDir: {dir: string, deep: number}[]
+    needScanDir: {dir: string, deep: number, subdir: string}[]
     result: TResult[],
     needScanIdx: number
 }
@@ -29,7 +30,7 @@ export function dir(dir: string, options: TOptions, callback: (error: Error, res
             mode: options?.mode,
             deep: options?.deep,
         },
-        needScanDir: [{dir: dir, deep: 0}],
+        needScanDir: [{dir: dir, deep: 0, subdir: ''}],
         needScanIdx: 0,
         result: []
     }
@@ -93,6 +94,7 @@ function dirInternal(state: TState, callback: (error: Error) => void) {
                             state.result.push({
                                 file: item,
                                 path: stateItem.dir,
+                                subpath: stateItem.subdir,
                                 fsstat: stat,
                             })
                         }
@@ -101,10 +103,11 @@ function dirInternal(state: TState, callback: (error: Error) => void) {
                             state.result.push({
                                 file: undefined,
                                 path: fileAbsolute,
+                                subpath: path.join(stateItem.subdir, item),
                                 fsstat: stat,
                             })
                         }
-                        state.needScanDir.push({dir: fileAbsolute, deep: stateItem.deep + 1})
+                        state.needScanDir.push({dir: fileAbsolute, deep: stateItem.deep + 1, subdir: path.join(stateItem.subdir, item)})
                     }
                 }
                 if (idx + 1 === list.length) {
