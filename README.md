@@ -330,3 +330,52 @@ const t = new vv.Timer(50, () => {
     console.log('this last tick')
 })
 ```
+
+### Mere
+class for work with date and time
+```typescript
+const mereDateTime1 = new vv.MereDateTime() //now
+const mereDateTime2 = new vv.MereDateTime() //empty
+const mereDateTime3 = new vv.MereDateTime('20240115')
+const mereDateTime4 = new vv.MereDateTime({val: 'aaa', defVal: '12.04.2018 16:35'})
+console.log(mereDateTime1.toString(), mereDateTime1.toJSON()) //in format "yyyy-mm-ddThh:mi:ss.msec"
+console.log(mereDateTime2.toString(), mereDateTime2.toJSON()) //''
+console.log(mereDateTime3.toString(), mereDateTime3.toJSON()) //'2024-01-15T00:00:00.000'
+console.log(mereDateTime4.toString(), mereDateTime4.toJSON()) //'2018-04-12T16:35:00.000'
+
+const mereDate1 = new vv.MereDate() //now
+const mereDate2 = new vv.MereDate() //empty
+const mereDate3 = new vv.MereDate('20240115')
+const mereDate4 = new vv.MereDate({val: 'aaa', defVal: '12.04.2018 16:35'})
+console.log(mereDate1.toString(), mereDate1.toJSON()) //in format "yyyy-mm-dd"
+console.log(mereDate2.toString(), mereDate2.toJSON()) //''
+console.log(mereDate3.toString(), mereDate3.toJSON()) //'2024-01-15'
+console.log(mereDate4.toString(), mereDate4.toJSON()) //'2018-04-12'
+
+const mereTime1 = new vv.MereTime() //now
+const mereTime2 = new vv.MereTime() //empty
+const mereTime3 = new vv.MereTime('3')
+const mereTime4 = new vv.MereTime('3:45')
+const mereTime5 = new vv.MereTime({val: 'aaa', defVal: '12.04.2018 16:35'})
+
+console.log(mereTime1.toString(), mereTime1.toJSON()) //in format "hh:mi:ss.msec"
+console.log(mereTime2.toString(), mereTime2.toJSON()) //''
+console.log(mereTime3.toString(), mereTime3.toJSON()) //'03:00:00.000'
+console.log(mereTime4.toString(), mereTime4.toJSON()) //'03:45:00.000'
+console.log(mereTime5.toString(), mereTime4.toJSON()) //'16:35:00.000'
+```
+
+### Range
+limiting a variable to multiple integer values
+```typescript
+let aaa =undefined as vv.TRange<0,5>
+aaa = -1    //error
+aaa = 0     //ok
+aaa = 1     //ok
+aaa = 2     //ok
+aaa = 3     //ok
+aaa = 3.5   //error
+aaa = 4     //ok
+aaa = 5     //error
+console.log(aaa)
+```

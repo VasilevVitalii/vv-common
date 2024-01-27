@@ -255,6 +255,41 @@ if (
     OnError()
 }
 
+OnTest('mere')
+const mere1 = new Date()
+const mere2 = vv.dateFormat(mere1, '126')
+
+const mereTest1 = new vv.MereDateTime(mere1).toString()
+const mereTest2 = new vv.MereDateTime({val: 'aaa', defVal: mere2}).toString()
+const mereTest3 = new vv.MereDateTime('').toString()
+const mereTest4 = new vv.MereDateTime().toString()
+
+const mereTest5 = new vv.MereDate(mere1).toString()
+const mereTest6 = new vv.MereDate({val: 'aaa', defVal: mere2}).toString()
+const mereTest7 = new vv.MereDate('').toString()
+const mereTest8 = new vv.MereDate().toString()
+
+if (mereTest1 !== mere2 ||
+    mereTest2 !== mere2 ||
+    mereTest3 !== '' ||
+    mereTest4.substring(0, 4) !== mere1.getFullYear().toString() ||
+    mereTest5 !== vv.dateFormat(mere1, 'yyyy-mm-dd') ||
+    mereTest6 !== vv.dateFormat(mere1, 'yyyy-mm-dd') ||
+    mereTest7 !== '' ||
+    mereTest8.substring(0, 4) !== mere1.getFullYear().toString() ||
+    new vv.MereTime('3').toString() !== '03:00:00.000' ||
+    new vv.MereTime('03').toString() !== '03:00:00.000' ||
+    new vv.MereTime('03:45').toString() !== '03:45:00.000' ||
+    new vv.MereTime('3:45:59').toString() !== '03:45:59.000' ||
+    new vv.MereTime('03:45:59.9').toString() !== '03:45:59.900' ||
+    new vv.MereTime('03:45:59.95').toString() !== '03:45:59.950' ||
+    new vv.MereTime('03:45:59.952').toString() !== '03:45:59.952' ||
+    new vv.MereTime(mere1).toString() !== vv.dateFormat(mere1, 'hh:mi:ss.msec') ||
+    new vv.MereTime('').toString() !== ''
+) {
+    OnError()
+}
+
 if (countErrors > 0) {
     console.warn(`FAILED ${countErrors} TESTS`)
 } else {

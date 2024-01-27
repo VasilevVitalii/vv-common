@@ -488,3 +488,8 @@ export { readFiles }
 import { Timer } from './timer'
 export { Timer }
 
+import { MereDateTime, MereDate, MereTime } from './mere'
+export { MereDateTime, MereDate, MereTime }
+
+import { TRange } from './range'
+export { TRange }
