@@ -290,6 +290,31 @@ if (mereTest1 !== mere2 ||
     OnError()
 }
 
+OnTest('numerator')
+const nc1 = new vv.Numerator(20)
+const nc11 = nc1.getNext()
+const nc12 = nc1.getNext()
+const nc2 = new vv.Numerator(25)
+const nc21 = nc2.getNext()
+const nc22 = nc2.getNext()
+const nc3 = new vv.Numerator()
+const nc31 = nc3.getNext()
+const nc32 = nc3.getNext()
+const nc4 = new vv.Numerator(17)
+let nc = nc4.getNext()
+for (let i = 0; i < 98; i++) {
+    nc = nc4.getNext()
+}
+const ncs1 = nc.slice(-2)
+const nci1 = vv.toInt(ncs1) || -1
+nc = nc4.getNext()
+const ncs2 = nc.slice(-2)
+const nci2 = vv.toInt(ncs2) || -1
+
+if (nc11.length != 20 || nc12.length !== 20 || nc21.length !== 25 || nc22.length !== 25 || nc31.length !== 30 || nc32.length !== 30 || nci1 !== 99 || nci2 !== 1) {
+    OnError()
+}
+
 if (countErrors > 0) {
     console.warn(`FAILED ${countErrors} TESTS`)
 } else {

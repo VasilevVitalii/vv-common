@@ -81,6 +81,7 @@ export class MereDateTime implements IMere {
     toString() {
         return this._val
     }
+
     toDate(): Date {
         return this._date
     }
@@ -158,7 +159,7 @@ export class MereDate implements IMere {
 
     toDate(): Date {
         return this._date
-    }    
+    }
 }
 
 /** Time without date and timezone; and stored as 'hh:mi:ss.msec' */
@@ -282,5 +283,5 @@ export class MereTime implements IMere {
 
     toDate(): Date {
         return this._date
-    }    
+    }
 }

@@ -1,6 +1,13 @@
 import { toIntPositive } from "."
 
-/** simple timer, based on nested call setTimeout; manual control of each subsequent tick */
+/**
+ * simple timer, based on nested call setTimeout; manual control of each subsequent tick
+ * example:
+ * const timer = new Timer(500, () => {
+ *      console.log('hello')
+ *      timer.nextTick(250)
+ * })
+ * */
 export class Timer implements Disposable {
     private _timer = undefined as NodeJS.Timeout
     private _onTick = undefined as () => void

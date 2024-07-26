@@ -493,3 +493,6 @@ export { MereDateTime, MereDate, MereTime }
 
 import { TRange } from './range'
 export { TRange }
+
+import { Numerator } from './numerator'
+export { Numerator }
