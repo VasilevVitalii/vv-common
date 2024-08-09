@@ -205,6 +205,12 @@ if (vv.prop(KNOWN_OBJ, 'AAA') !== 5 || vv.prop(KNOWN_OBJ, 'bbb') !== '1'  ||
     OnError()
 }
 
+OnTest('hash')
+if (vv.hash('hello, world') !== '52f9e17c'
+) {
+    OnError()
+}
+
 OnTest('guid')
 const g1 = vv.guid()
 const g2 = vv.guid()

@@ -473,6 +473,21 @@ export function prop(object: any, propertyName: string): any | undefined {
     return undefined
 }
 
+/** hash for string by algorithm Fowler–Noll–Vo (FNV) - FNV-1a hash */
+export function hash(val: string): string {
+    if (isEmpty(val)) return undefined
+
+    const FNV_PRIME = 0x01000193
+    const FNV_OFFSET_BASIS = 0x811c9dc5
+
+    let hash = FNV_OFFSET_BASIS;
+    for (let i = 0; i < val.length; i++) {
+        hash ^= val.charCodeAt(i)
+        hash = (hash * FNV_PRIME) >>> 0
+    }
+    return hash.toString(16)
+}
+
 import { guid } from './guid'
 export { guid }
 
