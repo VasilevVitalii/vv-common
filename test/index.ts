@@ -9,7 +9,7 @@ const KNOWN_OBJ = {
     bbb: '1',
     ddd: '1977-11-16T14:30:42.555',
     arr1: [
-        {zz: 1}, {zz: 2}
+        { zz: 1 }, { zz: 2 }
     ],
     arr2: [1, 2, 3]
 }
@@ -28,7 +28,7 @@ function OnError() {
 }
 
 OnTest('isEmpty')
-if (vv.isEmpty(false) || vv.isEmpty('asf') || vv.isEmpty({a: 5}) || vv.isEmpty({})) {
+if (vv.isEmpty(false) || vv.isEmpty('asf') || vv.isEmpty({ a: 5 }) || vv.isEmpty({})) {
     OnError()
 }
 OnTest('isEmpty')
@@ -36,15 +36,15 @@ if (!vv.isEmpty(undefined) || !vv.isEmpty('  ') || !vv.isEmpty(null) || !vv.isEm
     OnError()
 }
 OnTest('isFunction')
-if (vv.isFunction(false) || vv.isFunction('asf') || vv.isFunction({a: 5}) || vv.isFunction({}) || vv.isFunction(undefined) || vv.isFunction(null)) {
+if (vv.isFunction(false) || vv.isFunction('asf') || vv.isFunction({ a: 5 }) || vv.isFunction({}) || vv.isFunction(undefined) || vv.isFunction(null)) {
     OnError()
 }
 OnTest('isFunction')
-if (!vv.isFunction(OnError) || !vv.isFunction(() => {})) {
+if (!vv.isFunction(OnError) || !vv.isFunction(() => { })) {
     OnError()
 }
 OnTest('isGuid')
-if (vv.isGuid(false) || vv.isGuid('asf') || vv.isGuid({a: 5}) || vv.isGuid({}) || vv.isGuid(undefined) || vv.isGuid('  ') || vv.isGuid(null) || vv.isGuid(NaN)) {
+if (vv.isGuid(false) || vv.isGuid('asf') || vv.isGuid({ a: 5 }) || vv.isGuid({}) || vv.isGuid(undefined) || vv.isGuid('  ') || vv.isGuid(null) || vv.isGuid(NaN)) {
     OnError()
 }
 OnTest('isGuid')
@@ -52,7 +52,7 @@ if (!vv.isGuid('A7C52954-1823-4C43-BBB4-C6099475B4C1') || !vv.isGuid('00000000-0
     OnError()
 }
 OnTest('isIp')
-if (vv.isIp('192.999.5.6') || vv.isIp(false) || vv.isIp('asf') || vv.isIp({a: 5}) || vv.isIp({}) || vv.isIp(undefined) || vv.isIp('  ') || vv.isIp(null) || vv.isIp(NaN)) {
+if (vv.isIp('192.999.5.6') || vv.isIp(false) || vv.isIp('asf') || vv.isIp({ a: 5 }) || vv.isIp({}) || vv.isIp(undefined) || vv.isIp('  ') || vv.isIp(null) || vv.isIp(NaN)) {
     OnError()
 }
 OnTest('isIp')
@@ -60,17 +60,17 @@ if (!vv.isIp('8.8.8.8') || !vv.isIp('192.168.0.42')) {
     OnError()
 }
 OnTest('nz')
-if (vv.nz('a','b') !== 'a' || vv.nz(undefined,null,undefined,NaN,'','ss') !== 'ss') {
+if (vv.nz('a', 'b') !== 'a' || vv.nz(undefined, null, undefined, NaN, '', 'ss') !== 'ss') {
     OnError()
 }
 OnTest('replace')
 if (
-    vv.replace('a','b',null) !== null ||
-    vv.replace('a','b',undefined) !== undefined ||
-    vv.replace('a','b','1a2') !== '1b2' ||
-    vv.replace('a','b','1a2a3') !== '1b2b3' ||
-    vv.replace('a','b','1a2b3') !== '1b2b3' ||
-    vv.replace('a','b','123') !== '123'
+    vv.replace('a', 'b', null) !== null ||
+    vv.replace('a', 'b', undefined) !== undefined ||
+    vv.replace('a', 'b', '1a2') !== '1b2' ||
+    vv.replace('a', 'b', '1a2a3') !== '1b2b3' ||
+    vv.replace('a', 'b', '1a2b3') !== '1b2b3' ||
+    vv.replace('a', 'b', '123') !== '123'
 ) {
     OnError()
 }
@@ -108,18 +108,18 @@ if (
 
 OnTest('dateParts')
 if (
-    JSON.stringify(vv.dateParts(8)) !== JSON.stringify({day: 0, hour: 0, minute: 0, second: 0, millisecond: 8 }) ||
-    JSON.stringify(vv.dateParts(999)) !== JSON.stringify({day: 0, hour: 0, minute: 0, second: 0, millisecond: 999 }) ||
-    JSON.stringify(vv.dateParts(1000)) !== JSON.stringify({day: 0, hour: 0, minute: 0, second: 1, millisecond: 0 }) ||
-    JSON.stringify(vv.dateParts(5123)) !== JSON.stringify({day: 0, hour: 0, minute: 0, second: 5, millisecond: 123 }) ||
-    JSON.stringify(vv.dateParts(59999)) !== JSON.stringify({day: 0, hour: 0, minute: 0, second: 59, millisecond: 999 }) ||
-    JSON.stringify(vv.dateParts(60000)) !== JSON.stringify({day: 0, hour: 0, minute: 1, second: 0, millisecond: 0 }) ||
-    JSON.stringify(vv.dateParts(3599999)) !== JSON.stringify({day: 0, hour: 0, minute: 59, second: 59, millisecond: 999 }) ||
-    JSON.stringify(vv.dateParts(3600000)) !== JSON.stringify({day: 0, hour: 1, minute: 0, second: 0, millisecond: 0 }) ||
-    JSON.stringify(vv.dateParts(3600000 + 60000 * 2 + 1000 * 3 + 42)) !== JSON.stringify({day: 0, hour: 1, minute: 2, second: 3, millisecond: 42 }) ||
-    JSON.stringify(vv.dateParts(86399999)) !== JSON.stringify({day: 0, hour: 23, minute: 59, second: 59, millisecond: 999 }) ||
-    JSON.stringify(vv.dateParts(86400000)) !== JSON.stringify({day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }) ||
-    JSON.stringify(vv.dateParts(86400000 + 3600000 * 16 + 60000 * 30 + 1000 * 42 + 321)) !== JSON.stringify({day: 1, hour: 16, minute: 30, second: 42, millisecond: 321 })
+    JSON.stringify(vv.dateParts(8)) !== JSON.stringify({ day: 0, hour: 0, minute: 0, second: 0, millisecond: 8 }) ||
+    JSON.stringify(vv.dateParts(999)) !== JSON.stringify({ day: 0, hour: 0, minute: 0, second: 0, millisecond: 999 }) ||
+    JSON.stringify(vv.dateParts(1000)) !== JSON.stringify({ day: 0, hour: 0, minute: 0, second: 1, millisecond: 0 }) ||
+    JSON.stringify(vv.dateParts(5123)) !== JSON.stringify({ day: 0, hour: 0, minute: 0, second: 5, millisecond: 123 }) ||
+    JSON.stringify(vv.dateParts(59999)) !== JSON.stringify({ day: 0, hour: 0, minute: 0, second: 59, millisecond: 999 }) ||
+    JSON.stringify(vv.dateParts(60000)) !== JSON.stringify({ day: 0, hour: 0, minute: 1, second: 0, millisecond: 0 }) ||
+    JSON.stringify(vv.dateParts(3599999)) !== JSON.stringify({ day: 0, hour: 0, minute: 59, second: 59, millisecond: 999 }) ||
+    JSON.stringify(vv.dateParts(3600000)) !== JSON.stringify({ day: 0, hour: 1, minute: 0, second: 0, millisecond: 0 }) ||
+    JSON.stringify(vv.dateParts(3600000 + 60000 * 2 + 1000 * 3 + 42)) !== JSON.stringify({ day: 0, hour: 1, minute: 2, second: 3, millisecond: 42 }) ||
+    JSON.stringify(vv.dateParts(86399999)) !== JSON.stringify({ day: 0, hour: 23, minute: 59, second: 59, millisecond: 999 }) ||
+    JSON.stringify(vv.dateParts(86400000)) !== JSON.stringify({ day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }) ||
+    JSON.stringify(vv.dateParts(86400000 + 3600000 * 16 + 60000 * 30 + 1000 * 42 + 321)) !== JSON.stringify({ day: 1, hour: 16, minute: 30, second: 42, millisecond: 321 })
 ) {
     OnError()
 }
@@ -172,8 +172,8 @@ if (vv.toBool('aa') !== undefined || vv.toBool(100.34) !== undefined || vv.toBoo
 
 OnTest('toDate')
 if (
-    vv.dateFormat(vv.toDate('aa'),'126') !== '' || vv.dateFormat(vv.toDate(1),'126') !== '' || vv.dateFormat(vv.toDate(true),'126') !== '' ||
-    vv.dateFormat(vv.toDate(KNOWN_DATE1), '126') !== vv.dateFormat(KNOWN_DATE1,'126') ||
+    vv.dateFormat(vv.toDate('aa'), '126') !== '' || vv.dateFormat(vv.toDate(1), '126') !== '' || vv.dateFormat(vv.toDate(true), '126') !== '' ||
+    vv.dateFormat(vv.toDate(KNOWN_DATE1), '126') !== vv.dateFormat(KNOWN_DATE1, '126') ||
     vv.dateFormat(vv.toDate('1977-11-16T14:30:42.555'), '126') !== vv.dateFormat(KNOWN_DATE1, '126') ||
     vv.dateFormat(vv.toDate('1977.11.16'), '126') !== vv.dateFormat(new Date(1977, 10, 16), '126') ||
     vv.dateFormat(vv.toDate('1977-11-16'), '126') !== vv.dateFormat(new Date(1977, 10, 16), '126') ||
@@ -183,23 +183,23 @@ if (
 }
 
 OnTest('toArray')
-if (vv.toArray('aa') !== undefined || vv.toArray(100.34) !== undefined || JSON.stringify(vv.toArray([])) !== JSON.stringify([]) || JSON.stringify(vv.toArray([1,2])) !== JSON.stringify([1,2])
+if (vv.toArray('aa') !== undefined || vv.toArray(100.34) !== undefined || JSON.stringify(vv.toArray([])) !== JSON.stringify([]) || JSON.stringify(vv.toArray([1, 2])) !== JSON.stringify([1, 2])
 ) {
     OnError()
 }
 
 OnTest('equal')
 if (
-    !vv.equal(' AA ', 'aa') || !vv.equal(KNOWN_DATE1,KNOWN_DATE1)  || vv.equal(KNOWN_DATE1,KNOWN_DATE2) || !vv.equal(undefined, undefined) || vv.equal(4, undefined) ||  vv.equal('a', 'b') || !vv.equal(10,10) ||
+    !vv.equal(' AA ', 'aa') || !vv.equal(KNOWN_DATE1, KNOWN_DATE1) || vv.equal(KNOWN_DATE1, KNOWN_DATE2) || !vv.equal(undefined, undefined) || vv.equal(4, undefined) || vv.equal('a', 'b') || !vv.equal(10, 10) ||
     !vv.equal(undefined, null) || !vv.equal(undefined, NaN) || !vv.equal(null, NaN) || !vv.equal(undefined, '') || !vv.equal('', null)
 ) {
     OnError()
 }
 
 OnTest('prop')
-if (vv.prop(KNOWN_OBJ, 'AAA') !== 5 || vv.prop(KNOWN_OBJ, 'bbb') !== '1'  ||
+if (vv.prop(KNOWN_OBJ, 'AAA') !== 5 || vv.prop(KNOWN_OBJ, 'bbb') !== '1' ||
     vv.prop(KNOWN_OBJ, 'Ddd') !== '1977-11-16T14:30:42.555' ||
-    JSON.stringify(vv.prop(KNOWN_OBJ, 'arr2')) !== JSON.stringify([1,2,3]) ||
+    JSON.stringify(vv.prop(KNOWN_OBJ, 'arr2')) !== JSON.stringify([1, 2, 3]) ||
     vv.prop(KNOWN_OBJ, 'yyy') !== undefined
 ) {
     OnError()
@@ -208,6 +208,35 @@ if (vv.prop(KNOWN_OBJ, 'AAA') !== 5 || vv.prop(KNOWN_OBJ, 'bbb') !== '1'  ||
 OnTest('hash')
 if (vv.hash('hello, world') !== '52f9e17c'
 ) {
+    OnError()
+}
+
+OnTest('hideParam')
+const hideParamObj = {
+    username: 'john_doe',
+    password: '123456',
+    details: {
+        passwordNEW: 'password',
+        history: [
+            { oldPassword: 'password123' },
+            { oldPassword: '654321' }
+        ]
+    }
+}
+const hideParamObjResTrue = {
+    username: 'john_doe',
+    password: '******',
+    details: {
+        passwordNEW: '******',
+        history: [
+            { oldPassword: '******' },
+            { oldPassword: '******' }
+        ]
+    }
+}
+const hideParamObjRes = vv.hideParam(hideParamObj, 'PASSWORD', '******')
+if (JSON.stringify(hideParamObjRes, null, 4) !== JSON.stringify(hideParamObjResTrue, null, 4))
+{
     OnError()
 }
 
@@ -266,12 +295,12 @@ const mere1 = new Date()
 const mere2 = vv.dateFormat(mere1, '126')
 
 const mereTest1 = new vv.MereDateTime(mere1).toString()
-const mereTest2 = new vv.MereDateTime({val: 'aaa', defVal: mere2}).toString()
+const mereTest2 = new vv.MereDateTime({ val: 'aaa', defVal: mere2 }).toString()
 const mereTest3 = new vv.MereDateTime('').toString()
 const mereTest4 = new vv.MereDateTime().toString()
 
 const mereTest5 = new vv.MereDate(mere1).toString()
-const mereTest6 = new vv.MereDate({val: 'aaa', defVal: mere2}).toString()
+const mereTest6 = new vv.MereDate({ val: 'aaa', defVal: mere2 }).toString()
 const mereTest7 = new vv.MereDate('').toString()
 const mereTest8 = new vv.MereDate().toString()
 

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-const REGEX_INT=/^[+-]?\d+$/
-const REGEX_FLOAT=/^[+-]?\d+(\.\d+)?$/
-const REGEX_IP=/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
-const REGEX_GUID=/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
+const REGEX_INT = /^[+-]?\d+$/
+const REGEX_FLOAT = /^[+-]?\d+(\.\d+)?$/
+const REGEX_IP = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+const REGEX_GUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
 
 /** Check object for undefined, null, NaN, empty string */
 export function isEmpty(object: any): boolean {
@@ -84,7 +84,7 @@ export function dateFormat(date: Date, format: string): string {
  * @param date date for convert
  * @param format 'dayInYear' - ordinal number of the day of the year, 'secInDay' - ordinal number of the second of the day
  */
-export function dateFormatOrdinal (date: Date, format: ('dayInYear' | 'secInDay')): string {
+export function dateFormatOrdinal(date: Date, format: ('dayInYear' | 'secInDay')): string {
     if (isEmpty(date)) return ''
     if (format === 'dayInYear') {
         const numDayPrepare = date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()
@@ -105,7 +105,7 @@ export function dateFormatOrdinal (date: Date, format: ('dayInYear' | 'secInDay'
  * get msec as count days, hours, seconds, milliseconds
  * @param milliseconds
  */
-export function dateParts (milliseconds: number): {day: number, hour: number, minute: number, second: number, millisecond: number } {
+export function dateParts(milliseconds: number): { day: number, hour: number, minute: number, second: number, millisecond: number } {
     const oneSec = 1000
     const oneMin = 60000
     const oneHour = 3600000
@@ -152,7 +152,7 @@ export function dateParts (milliseconds: number): {day: number, hour: number, mi
 }
 
 /** add second or minute or hour or day to date */
-export function dateAdd(date: Date, interval : ('second'|'minute'|'hour'|'day'), value: number): Date | undefined  {
+export function dateAdd(date: Date, interval: ('second' | 'minute' | 'hour' | 'day'), value: number): Date | undefined {
     if (isEmpty(date) || isEmpty(interval) || isEmpty(value)) return undefined
     if (interval === 'second') {
         return new Date(date.getTime() + (value * 1000))
@@ -312,17 +312,17 @@ export function toDate(value: any): Date | undefined {
 
     // 2018.04.12-16:35:49 -> 2018-04-12T16:35:49
     if (value.length === 19
-        && value.substring(4,5) === '.'
-        && value.substring(7,8) === '.'
-        && value.substring(7,8) === '.'
-        && value.substring(10,11) === '-'
-        && value.substring(13,14) === ':'
-        && value.substring(16,17) === ':'
+        && value.substring(4, 5) === '.'
+        && value.substring(7, 8) === '.'
+        && value.substring(7, 8) === '.'
+        && value.substring(10, 11) === '-'
+        && value.substring(13, 14) === ':'
+        && value.substring(16, 17) === ':'
     ) {
-        value = value.substring(0,4).concat(
-            '-', value.substring(5,7),
-            '-', value.substring(8,10),
-            'T', value.substring(11,value.length)
+        value = value.substring(0, 4).concat(
+            '-', value.substring(5, 7),
+            '-', value.substring(8, 10),
+            'T', value.substring(11, value.length)
         )
     }
 
@@ -332,124 +332,124 @@ export function toDate(value: any): Date | undefined {
     // 2018-04-12T16:35:49
     if (value.length >= 19
         && value.length <= 29
-        && !isEmpty(toInt(value.substring(0,4)))
-        && value.substring(4,5) === '-'
-        && !isEmpty(toInt(value.substring(5,7)))
-        && value.substring(7,8) === '-'
-        && !isEmpty(toInt(value.substring(8,10)))
-        && value.substring(10,11) === 'T'
-        && value.substring(13,14) === ':'
-        && value.substring(16,17) === ':'
+        && !isEmpty(toInt(value.substring(0, 4)))
+        && value.substring(4, 5) === '-'
+        && !isEmpty(toInt(value.substring(5, 7)))
+        && value.substring(7, 8) === '-'
+        && !isEmpty(toInt(value.substring(8, 10)))
+        && value.substring(10, 11) === 'T'
+        && value.substring(13, 14) === ':'
+        && value.substring(16, 17) === ':'
     ) {
-        if (value[value.length-1].toLowerCase() === 'z') {
-            value = value.substring(0,value.length-1)
+        if (value[value.length - 1].toLowerCase() === 'z') {
+            value = value.substring(0, value.length - 1)
         }
-        year = toInt(value.substring(0,4))
-        month = toInt(value.substring(5,7))
-        day = toInt(value.substring(8,10))
-        hour = toInt(value.substring(11,13))
-        minute = toInt(value.substring(14,16))
-        second = toInt(value.substring(17,19))
+        year = toInt(value.substring(0, 4))
+        month = toInt(value.substring(5, 7))
+        day = toInt(value.substring(8, 10))
+        hour = toInt(value.substring(11, 13))
+        minute = toInt(value.substring(14, 16))
+        second = toInt(value.substring(17, 19))
         if (value.length === 29
-            && value.substring(19,20) === '.'
-            && !isEmpty(toInt(value.substring(20,23)))
-            && value.substring(23,24) === '+'
-            && !isEmpty(toInt(value.substring(24,26)))
-            && value.substring(26,27) === ':'
-            && !isEmpty(toInt(value.substring(27,29)))
+            && value.substring(19, 20) === '.'
+            && !isEmpty(toInt(value.substring(20, 23)))
+            && value.substring(23, 24) === '+'
+            && !isEmpty(toInt(value.substring(24, 26)))
+            && value.substring(26, 27) === ':'
+            && !isEmpty(toInt(value.substring(27, 29)))
         ) {
-            millisecond = toInt(value.substring(20,23))
+            millisecond = toInt(value.substring(20, 23))
         } else if (value.length > 19
-            && value.substring(19,20) === '.'
-            && !isEmpty(toInt(value.substring(20,value.length)))
+            && value.substring(19, 20) === '.'
+            && !isEmpty(toInt(value.substring(20, value.length)))
         ) {
             if (value.length === 21) {
-                millisecond = toInt(value.substring(20,21)) * 100
+                millisecond = toInt(value.substring(20, 21)) * 100
             } else if (value.length === 22) {
-                millisecond = toInt(value.substring(20,22)) * 10
+                millisecond = toInt(value.substring(20, 22)) * 10
             } else {
-                millisecond = toInt(value.substring(20,23))
+                millisecond = toInt(value.substring(20, 23))
             }
         } else if (value.length != 19) {
             year = undefined
         }
     } else
-    // 12.04.2018 16:35:49
-    // 12.04.2018 16:35
-    // 12.04.2018
-    // 12-04-2018 16:35:49
-    // 12-04-2018 16:35
-    // 12-04-2018
-    if (value.length >= 10
-        && value.length <= 19
-        && !isEmpty(toInt(value.substring(0,2)))
-        && ['.', '-'].includes(value.substring(2,3))
-        && !isEmpty(toInt(value.substring(3,5)))
-        && ['.', '-'].includes(value.substring(5,6))
-        && !isEmpty(toInt(value.substring(6,10)))
-        && value.substring(2,3) === value.substring(5,6)
-    ) {
-        day = toInt(value.substring(0,2))
-        month = toInt(value.substring(3,5))
-        year = toInt(value.substring(6,10))
+        // 12.04.2018 16:35:49
+        // 12.04.2018 16:35
+        // 12.04.2018
+        // 12-04-2018 16:35:49
+        // 12-04-2018 16:35
+        // 12-04-2018
+        if (value.length >= 10
+            && value.length <= 19
+            && !isEmpty(toInt(value.substring(0, 2)))
+            && ['.', '-'].includes(value.substring(2, 3))
+            && !isEmpty(toInt(value.substring(3, 5)))
+            && ['.', '-'].includes(value.substring(5, 6))
+            && !isEmpty(toInt(value.substring(6, 10)))
+            && value.substring(2, 3) === value.substring(5, 6)
+        ) {
+            day = toInt(value.substring(0, 2))
+            month = toInt(value.substring(3, 5))
+            year = toInt(value.substring(6, 10))
 
-        if (value.length === 19
-            && value.substring(10,11) === ' '
-            && !isEmpty(toInt(value.substring(11,13)))
-            && value.substring(13,14) === ':'
-            && !isEmpty(toInt(value.substring(14,16)))
-            && value.substring(16,17) === ':'
-            && !isEmpty(toInt(value.substring(17,19)))
-        ) {
-            hour = toInt(value.substring(11,13))
-            minute = toInt(value.substring(14,16))
-            second = toInt(value.substring(17,19))
-        } else if (value.length === 16
-            && value.substring(10,11) === ' '
-            && !isEmpty(toInt(value.substring(11,13)))
-            && value.substring(13,14) === ':'
-            && !isEmpty(toInt(value.substring(14,16)))
-        ) {
-            hour = toInt(value.substring(11,13))
-            minute = toInt(value.substring(14,16))
-        } else if (value.length != 10) {
-            year = undefined
-        }
-    } else
-    // 2018-04-16
-    // 2018/04/16
-    // 2018.04.16
-    if (value.length === 10
-        && !isEmpty(toInt(value.substring(0,4)))
-        && ['-', '/', '.'].includes(value.substring(4,5))
-        && !isEmpty(toInt(value.substring(5,7)))
-        && ['-', '/', '.'].includes(value.substring(7,8))
-        && !isEmpty(toInt(value.substring(8,10)))
-    ) {
-        year = toInt(value.substring(0,4))
-        month = toInt(value.substring(5,7))
-        day = toInt(value.substring(8,10))
-    } else
-    // 20180416
-    if (value.length === 8
-        && !isEmpty(toInt(value.substring(0,value.length)))
-    ) {
-        year = toInt(value.substring(0,4))
-        month = toInt(value.substring(4,6))
-        day = toInt(value.substring(6,8))
-    } else {
-        year = undefined
-    }
+            if (value.length === 19
+                && value.substring(10, 11) === ' '
+                && !isEmpty(toInt(value.substring(11, 13)))
+                && value.substring(13, 14) === ':'
+                && !isEmpty(toInt(value.substring(14, 16)))
+                && value.substring(16, 17) === ':'
+                && !isEmpty(toInt(value.substring(17, 19)))
+            ) {
+                hour = toInt(value.substring(11, 13))
+                minute = toInt(value.substring(14, 16))
+                second = toInt(value.substring(17, 19))
+            } else if (value.length === 16
+                && value.substring(10, 11) === ' '
+                && !isEmpty(toInt(value.substring(11, 13)))
+                && value.substring(13, 14) === ':'
+                && !isEmpty(toInt(value.substring(14, 16)))
+            ) {
+                hour = toInt(value.substring(11, 13))
+                minute = toInt(value.substring(14, 16))
+            } else if (value.length != 10) {
+                year = undefined
+            }
+        } else
+            // 2018-04-16
+            // 2018/04/16
+            // 2018.04.16
+            if (value.length === 10
+                && !isEmpty(toInt(value.substring(0, 4)))
+                && ['-', '/', '.'].includes(value.substring(4, 5))
+                && !isEmpty(toInt(value.substring(5, 7)))
+                && ['-', '/', '.'].includes(value.substring(7, 8))
+                && !isEmpty(toInt(value.substring(8, 10)))
+            ) {
+                year = toInt(value.substring(0, 4))
+                month = toInt(value.substring(5, 7))
+                day = toInt(value.substring(8, 10))
+            } else
+                // 20180416
+                if (value.length === 8
+                    && !isEmpty(toInt(value.substring(0, value.length)))
+                ) {
+                    year = toInt(value.substring(0, 4))
+                    month = toInt(value.substring(4, 6))
+                    day = toInt(value.substring(6, 8))
+                } else {
+                    year = undefined
+                }
 
     if (!isEmpty(year)) {
         if (year < 0 || year > 9999 || month < 1 || month > 12 || day < 1 || day > 31 || (month === 2 && day > 29) ||
-        hour < 0 || hour > 24 || minute < 0 || minute > 59 || second < 0 || second > 59) {
+            hour < 0 || hour > 24 || minute < 0 || minute > 59 || second < 0 || second > 59) {
             year = undefined
         }
     }
 
     if (!isEmpty(year)) {
-        const ret = new Date(year,month-1,day,hour,minute,second,millisecond)
+        const ret = new Date(year, month - 1, day, hour, minute, second, millisecond)
         return ret
     }
 
@@ -486,6 +486,26 @@ export function hash(val: string): string {
         hash = (hash * FNV_PRIME) >>> 0
     }
     return hash.toString(16)
+}
+
+/** change param(s) object, example - change in object property "password" to, example 'HIDDEN' */
+export function hideParam<T>(obj: T, findParam: string, replaceText: string): T {
+    if (Array.isArray(obj)) {
+        return obj.map(item => hideParam(item, findParam, replaceText)) as T
+    } else if (typeof obj === 'object' && obj !== null) {
+        const result: Record<string, any> = {}
+        for (const key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                if (key.toLowerCase().includes(findParam.toLowerCase())) {
+                    result[key] = replaceText
+                } else {
+                    result[key] = hideParam(obj[key], findParam, replaceText)
+                }
+            }
+        }
+        return result as T
+    }
+    return obj
 }
 
 import { guid } from './guid'
