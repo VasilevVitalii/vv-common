@@ -229,6 +229,22 @@ console.log(vv.toArray(100.34))	//undefined
 console.log(vv.toArray([]))		//[]
 console.log(vv.toArray([1,2]))	//[1,2]
 ```
+### toLexem
+split string by dividers
+```typescript
+console.log(vv.toLexem('/*comment */\nlet a=4*5', [' ', '/*', '*/', '*', '\n']))
+// result in console (without brackets):
+// "/*"
+// "comment"
+// " "
+// "*/"
+// "\n"
+// let
+// " "
+// a=4
+// *
+// 5
+```
 ### equal
 compare two variables
 ```typescript
