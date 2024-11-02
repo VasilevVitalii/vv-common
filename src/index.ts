@@ -462,6 +462,39 @@ export function toArray(value: any): Array<any> | undefined {
     return value
 }
 
+/** split string by dividers */
+export function toToken(origin: string, dividers: string[]): string[] {
+    const result: string[] = []
+    let idx = 0
+
+    while (idx < origin.length) {
+        let foundDivider = false
+
+        for (const divider of dividers) {
+            if (origin.startsWith(divider, idx)) {
+                if (idx > 0) {
+                    result.push(origin.slice(0, idx))
+                }
+                result.push(divider)
+                origin = origin.slice(idx + divider.length)
+                idx = 0
+                foundDivider = true
+                break
+            }
+        }
+
+        if (!foundDivider) {
+            idx++
+        }
+    }
+
+    if (origin.length > 0) {
+        result.push(origin)
+    }
+
+    return result
+}
+
 /** get prop from object by name with ignore match case */
 export function prop(object: any, propertyName: string): any | undefined {
     if (isEmpty(object)) return undefined

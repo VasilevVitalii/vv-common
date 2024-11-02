@@ -22,9 +22,13 @@ function OnTest(name: string) {
     console.log(`RUN TEST "${name}" #${testPosition}`)
 }
 
-function OnError() {
+function OnError(err?: string) {
     countErrors++
-    console.warn(`TEST #${testPosition} FAIL`)
+    let text = `TEST #${testPosition} FAIL`
+    if (err) {
+        text = `${text}: ${err}`
+    }
+    console.warn(text)
 }
 
 OnTest('isEmpty')
@@ -186,6 +190,19 @@ OnTest('toArray')
 if (vv.toArray('aa') !== undefined || vv.toArray(100.34) !== undefined || JSON.stringify(vv.toArray([])) !== JSON.stringify([]) || JSON.stringify(vv.toArray([1, 2])) !== JSON.stringify([1, 2])
 ) {
     OnError()
+}
+
+OnTest('toToken')
+const toTokenTests = [
+    {origin: `a!b`, dividers: [`!`], result: ['a','!','b']},
+    {origin: `aaa /*bbb ccc */ 1*2`, dividers: [` `, `/*`, `*/`, `*`], result: ['aaa',' ','/*', 'bbb', ' ', 'ccc', ' ', '*/', ' ', '1', '*', '2']}
+]
+for (const tt of toTokenTests) {
+    const trueRes = tt.result.join('#$#')
+    const existsRes = vv.toToken(tt.origin, tt.dividers).join('#$#')
+    if (trueRes != existsRes) {
+        OnError(`error in origin ${tt.origin}`)
+    }
 }
 
 OnTest('equal')
