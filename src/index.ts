@@ -6,7 +6,7 @@ const REGEX_GUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}
 
 /** list of all space chars, new line exclued */
 export const SPACE_CHARS = [
-    `\n`,               //space
+    ` `,               //space
     `\t`,               //tab
     `\u00A0`,           //Non-breaking space (NBSP)
     `\u2011`,           //Non-breaking hyphen
