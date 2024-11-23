@@ -66,7 +66,7 @@ function TokenFind<T>(
             text: string | string[]
             maxDistance?: number
         }[],
-        handleBeforeStep?: (item: T, pos: number, needFindIdx: number) => 'skip' | 'add-in-result' | 'exit' | 'process'
+        handleBeforeStep?: (item: T, pos: number, needFindIdx: number, q: { text: null | string[], attempts: number }) => 'skip' | 'add-in-result' | 'exit' | 'process'
     }
 ): { pos: number, item: T }[] {
 
@@ -90,8 +90,9 @@ function TokenFind<T>(
     while ((direction === 'next' && pos < posEnd) || (direction === 'prev' && pos > posBegin)) {
         pos = pos + (direction === 'next' ? 1 : -1)
         const item = params.origin.list[pos]
+        const q = queue[needFindIdx]
 
-        const h = handleBeforeStep(item, pos, needFindIdx)
+        const h = handleBeforeStep(item, pos, needFindIdx, q)
         if (h === 'skip') {
             continue
         } else if (h === 'exit') {
@@ -100,7 +101,6 @@ function TokenFind<T>(
             result.push({item, pos})
             needFindIdx++
         } else {
-            const q = queue[needFindIdx]
             if (q.text === null) {
                 result.push({item, pos})
                 needFindIdx++
