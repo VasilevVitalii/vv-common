@@ -117,20 +117,6 @@ function TokenFind<T>(
             }
         }
         if (queue.length <= result.length) break
-        //needFindIdx++
     }
-
-
-
-
-    // if (handle?.before) {
-    //     handle?.before(undefined, 0, 0)
-    // }
-    // if (handle?.after) {
-    //     handle?.after(undefined, 0, 0, false)
-    // }
-
-    //console.log(queue)
-
-    return result
+    return queue.length <= result.length ? result : undefined
 }
