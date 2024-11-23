@@ -4,21 +4,6 @@ const REGEX_FLOAT = /^[+-]?\d+(\.\d+)?$/
 const REGEX_IP = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
 const REGEX_GUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
 
-/** list of all space chars, new line exclued */
-export const SPACE_CHARS = [
-    ` `,               //space
-    `\t`,               //tab
-    `\u00A0`,           //Non-breaking space (NBSP)
-    `\u2011`,           //Non-breaking hyphen
-    `\u200B`,           //Zero-width space
-    `\u200C`,           //Zero-width non-joiner
-    `\u200D`,           //Zero-width joiner
-    `\u2003`,           //Em space
-    `\u2002`,           //En space
-    `\u2007`,           //Figure space
-    `\u2009`            //Thin space
-]
-
 /** Check object for undefined, null, NaN, empty string */
 export function isEmpty(object: any): boolean {
     if (object === undefined || object === null) return true
@@ -477,39 +462,6 @@ export function toArray(value: any): Array<any> | undefined {
     return value
 }
 
-/** split string by dividers */
-export function toToken(origin: string, dividers: string[]): string[] {
-    const result: string[] = []
-    let idx = 0
-
-    while (idx < origin.length) {
-        let foundDivider = false
-
-        for (const divider of dividers) {
-            if (origin.startsWith(divider, idx)) {
-                if (idx > 0) {
-                    result.push(origin.slice(0, idx))
-                }
-                result.push(divider)
-                origin = origin.slice(idx + divider.length)
-                idx = 0
-                foundDivider = true
-                break
-            }
-        }
-
-        if (!foundDivider) {
-            idx++
-        }
-    }
-
-    if (origin.length > 0) {
-        result.push(origin)
-    }
-
-    return result
-}
-
 /** get prop from object by name with ignore match case */
 export function prop(object: any, propertyName: string): any | undefined {
     if (isEmpty(object)) return undefined
@@ -579,3 +531,6 @@ export { TRange }
 
 import { Numerator } from './numerator'
 export { Numerator }
+
+import { token } from './token'
+export { token }

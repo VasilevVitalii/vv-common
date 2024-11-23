@@ -192,17 +192,59 @@ if (vv.toArray('aa') !== undefined || vv.toArray(100.34) !== undefined || JSON.s
     OnError()
 }
 
-OnTest('toToken')
+OnTest('token.create')
 const toTokenTests = [
-    {origin: `a!b`, dividers: [`!`], result: ['a','!','b']},
-    {origin: `aaa /*bbb ccc */ 1*2`, dividers: [` `, `/*`, `*/`, `*`], result: ['aaa',' ','/*', 'bbb', ' ', 'ccc', ' ', '*/', ' ', '1', '*', '2']}
+    { origin: `a!b`, dividers: [`!`], result: ['a', '!', 'b'] },
+    { origin: `aaa /*bbb ccc */ 1*2`, dividers: [` `, `/*`, `*/`, `*`], result: ['aaa', ' ', '/*', 'bbb', ' ', 'ccc', ' ', '*/', ' ', '1', '*', '2'] }
 ]
 for (const tt of toTokenTests) {
     const trueRes = tt.result.join('#$#')
-    const existsRes = vv.toToken(tt.origin, tt.dividers).join('#$#')
+    const existsRes = vv.token.create(tt.origin, tt.dividers).join('#$#')
     if (trueRes != existsRes) {
         OnError(`error in origin ${tt.origin}`)
     }
+}
+
+OnTest('token.find')
+const tokens = vv.token.create('create or replace table ID ( id int )', vv.token.SPACE_CHARS).map(m => { return { text: m } })
+const trueRes1 = [{item:{text: 'create'},pos: 0},{item:{text: 'table'},pos: 6},{item:{text: 'ID'},pos: 8}]
+const res1 = vv.token.find<{ text: string }>({
+    origin: {
+        list: tokens,
+        fieldName: 'text',
+        direction: 'next'
+    },
+    queue: [
+        { text: 'create', maxDistance: 0 },
+        { text: 'table', maxDistance: 2 },
+        { text: null, maxDistance: 0 },
+    ],
+    handleBeforeStep: (item) => {
+        if (item.text === ' ') return 'skip'
+        return 'process'
+    }
+})
+if (JSON.stringify(res1) !== JSON.stringify(trueRes1)) {
+    OnError('TEST1')
+}
+const trueRes2 = [{item:{text: 'int'},pos: 14},{item:{text: 'id'},pos: 12}]
+const res2 = vv.token.find<{ text: string }>({
+    origin: {
+        list: tokens,
+        fieldName: 'text',
+        direction: 'prev'
+    },
+    queue: [
+        { text: 'int', maxDistance: 5 },
+        { text: 'id' },
+    ],
+    handleBeforeStep: (item) => {
+        if (item.text === ' ') return 'skip'
+        return 'process'
+    }
+})
+if (JSON.stringify(res2) !== JSON.stringify(trueRes2)) {
+    OnError('TEST2')
 }
 
 OnTest('equal')
@@ -252,8 +294,7 @@ const hideParamObjResTrue = {
     }
 }
 const hideParamObjRes = vv.hideParam(hideParamObj, 'PASSWORD', '******')
-if (JSON.stringify(hideParamObjRes, null, 4) !== JSON.stringify(hideParamObjResTrue, null, 4))
-{
+if (JSON.stringify(hideParamObjRes, null, 4) !== JSON.stringify(hideParamObjResTrue, null, 4)) {
     OnError()
 }
 
