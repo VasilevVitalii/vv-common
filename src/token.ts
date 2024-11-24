@@ -66,7 +66,8 @@ function TokenFind<T>(
             text: string | string[]
             maxDistance?: number
         }[],
-        handleBeforeStep?: (item: T, pos: number, needFindIdx: number, q: { text: null | string[], attempts: number }) => 'skip' | 'add-in-result' | 'exit' | 'process'
+        handleBeforeStep?: (item: T, pos: number, needFindIdx: number, q: { text: null | string[], attempts: number }) => 'skip' | 'add-in-result' | 'exit' | 'process',
+        handleBeforeAdd?: (item: T, pos: number) => boolean
     }
 ): { pos: number, item: T }[] {
 
@@ -78,6 +79,7 @@ function TokenFind<T>(
     let pos = direction === 'next' ? posBegin - 1 : posEnd + 1
 
     const handleBeforeStep = params.handleBeforeStep || (() => { return 'process' })
+    const handleBeforeAdd = params.handleBeforeAdd ||  (() => { return true })
 
     const queue = params.queue.map(m => {
         return {
@@ -93,29 +95,43 @@ function TokenFind<T>(
         const q = queue[needFindIdx]
 
         const h = handleBeforeStep(item, pos, needFindIdx, q)
+
+        let allowForAdd = undefined as {item: T, pos: number}
+
         if (h === 'skip') {
             continue
         } else if (h === 'exit') {
             return undefined
         } else if (h === 'add-in-result') {
-            result.push({item, pos})
-            needFindIdx++
+            allowForAdd = {item, pos}
+            //result.push({item, pos})
+            //needFindIdx++
         } else {
             if (q.text === null) {
-                result.push({item, pos})
-                needFindIdx++
+                allowForAdd = {item, pos}
+                //result.push({item, pos})
+                //needFindIdx++
             } else {
                 if (q.attempts > 0) {
                     q.attempts--
                     if (q.text.some(f => equal(f, item[params.origin.fieldName]))) {
-                        result.push({item, pos})
-                        needFindIdx++
+                        allowForAdd = {item, pos}
+                        //result.push({item, pos})
+                        //needFindIdx++
                     }
                 } else {
                     return undefined
                 }
             }
         }
+
+        if (allowForAdd) {
+            if (handleBeforeAdd(allowForAdd.item, allowForAdd.pos)) {
+                result.push({item, pos})
+                needFindIdx++
+            }
+        }
+
         if (queue.length <= result.length) break
     }
     return queue.length <= result.length ? result : undefined

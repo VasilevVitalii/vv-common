@@ -1,6 +1,6 @@
 {
     "name": "vv-common",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "description": "many small functions for everyday use",
     "main": "dist/src/index.js",
     "scripts": {
