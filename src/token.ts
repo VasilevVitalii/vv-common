@@ -63,7 +63,7 @@ function TokenFind<T>(
             direction?: 'next' | 'prev'
         },
         queue: {
-            text: string | string[]
+            text: string | string[] | null
             maxDistance?: number
         }[],
         handleBeforeStep?: (item: T, pos: number, needFindIdx: number, q: { text: null | string[], attempts: number }) => 'skip' | 'add-in-result' | 'exit' | 'process',
@@ -104,20 +104,14 @@ function TokenFind<T>(
             return undefined
         } else if (h === 'add-in-result') {
             allowForAdd = {item, pos}
-            //result.push({item, pos})
-            //needFindIdx++
         } else {
             if (q.text === null) {
                 allowForAdd = {item, pos}
-                //result.push({item, pos})
-                //needFindIdx++
             } else {
                 if (q.attempts > 0) {
                     q.attempts--
                     if (q.text.some(f => equal(f, item[params.origin.fieldName]))) {
                         allowForAdd = {item, pos}
-                        //result.push({item, pos})
-                        //needFindIdx++
                     }
                 } else {
                     return undefined
